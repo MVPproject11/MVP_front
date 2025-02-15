@@ -1,6 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 
+export interface SignupButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  style?: React.CSSProperties; // style 속성 추가
+  children: React.ReactNode; // children을 허용
+  onClick?: () => void; // 클릭 이벤트 핸들러 (선택적)
+}
+
 const StyledButton = styled.button`
   width: 100%;
   height: 50px;
@@ -23,10 +29,6 @@ const StyledButton = styled.button`
   }
 `;
 
-interface SignupButtonProps {
-  children: React.ReactNode; // children을 허용
-  onClick?: () => void; // 클릭 이벤트 핸들러 (선택적)
-}
 
 const SignupButton: React.FC<SignupButtonProps> = ({ children, onClick }) => {
   return <StyledButton onClick={onClick}>{children}</StyledButton>;
