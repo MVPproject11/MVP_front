@@ -2,10 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import SocialLogin from "../components/socialLogin";
 import StyledLinkComponent from "../components/styledLinkComponent";
-import LoginButton from "../components/button1";
-import SignupButton from "../components/button2";
+import Button1 from "../components/button1";
+import Button2 from "../components/button2";
 import { FormGroup, Label, FormInput } from "../components/formComponent";
 import EmailInputGroup from "../components/emailComponent";
+import InputAndButton from "../components/inputAndButton";
+
 
 const FindPasswordFormContainer = styled.div`
     margin-top: 120px;
@@ -55,6 +57,20 @@ const Spacer = styled.div<{ height: number }>`
   height: ${({ height }) => height}px;
 `;
 
+//입력&버튼
+const InputAndButtonContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  gap: 23px; /* input과 버튼 간의 간격 */
+`;
+
+// 버튼
+const Hello = styled.div`
+    width: 119px;
+    height: 30px;
+`;
+
 export default function FindPasswordMain(){
     console.log("FindPassword 컴포넌트 렌더링됨"); // 디버깅용
     return(
@@ -75,20 +91,19 @@ export default function FindPasswordMain(){
                 <Spacer height={32}/>
                 {/* 인증번호 */}
                 <FormGroup>
-                    <label htmlFor="email">인증번호</label>
-                    <FormInput type="email" id="email" placeholder="이메일 입력" />
+                    <Label>인증번호</Label>
+                    <InputAndButton type="text" id="check" placeholder="인증번호" buttonText="인증번호 전송" />
                 </FormGroup>
                 <Spacer height={40}/>
-                <LoginButton>비밀번호 찾기</LoginButton>
+                <Button1>비밀번호 찾기</Button1>
                 <Spacer height={8}/>
                 <LinkContainer>
                     <StyledLinkComponent href="/login" text="로그인" />
                     <StyledLinkComponent href="/find-id" text="아이디찾기" />
                 </LinkContainer>
-                
                 <Spacer height={40}/>
                 <SocialLogin/>
             </FindPasswordFormContainer>
         </div>
-    )
+    );
 }
