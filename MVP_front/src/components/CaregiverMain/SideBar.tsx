@@ -4,6 +4,7 @@ import User from "../../assets/image/User.png";
 import WorkSetting from "../../assets/image/WorkSetting.png";
 import Package from "../../assets/image/Package.png";
 import Settings from "../../assets/image/Settings.png";
+import { useNavigate } from "react-router-dom";
 
 const SidebarContainer = styled.div`
   width: 16rem;
@@ -84,14 +85,21 @@ const MenuIcon = styled.span<{ isActive: boolean }>`
 `;
 
 export default function SideBar() {
+    const navigate = useNavigate();
     const [profile] = useState({
         name: '김재현',
         role: '요양보호사',
         imageUrl: '/api/placeholder/150/150',
         level: 2,
     });
+
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [activeMenuItem, setActiveMenuItem] = useState('내 프로필');
+
+    const handleMenuItemClick = (menuItem: string, path: string) => {
+        setActiveMenuItem(menuItem);
+        navigate(path);
+      };
 
     const handleProfileClick = () => {
         setIsCollapsed(!isCollapsed);
@@ -126,19 +134,19 @@ export default function SideBar() {
                     icon={<img src={WorkSetting} alt="Work Setting Icon" className="w-5 h-5" />}
                     text="근무 조건 설정"
                     isActive={activeMenuItem === '근무 조건 설정'}
-                    onClick={() => setActiveMenuItem('근무 조건 설정')}
+                    onClick={() => handleMenuItemClick('근무 조건 설정', '/work-settings')}
                 />
                 <MenuItem
                     icon={<img src={Package} alt="Package Icon" className="w-5 h-5" />}
                     text="매칭 관리"
                     isActive={activeMenuItem === '매칭 관리'}
-                    onClick={() => setActiveMenuItem('매칭 관리')}
+                    onClick={() => handleMenuItemClick('매칭 관리', '/matching')}
                 />
                 <MenuItem
                     icon={<img src={Settings} alt="Settings Icon" className="w-5 h-5" />}
                     text="회원 정보 관리"
                     isActive={activeMenuItem === '회원 정보 관리'}
-                    onClick={() => setActiveMenuItem('회원 정보 관리')}
+                    onClick={() => handleMenuItemClick('회원 정보 관리', '/settings')}
                 />
             </Nav>
         </SidebarContainer>

@@ -29,7 +29,7 @@ const WorkConditions: React.FC<WorkConditionsProps> = ({ onSubmit }) => {
     <div className="max-w-2xl mx-auto p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-bold text-gray-800">근무 조건 설정</h2>
-        <br className='gray'/>
+        <br className='gray-800'/>
         <button
           onClick={() => setIsEditing(!isEditing)}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors
