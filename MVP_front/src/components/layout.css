@@ -16,7 +16,7 @@
     left: 0;
     width: 1377px; /* 고정 너비 */
     height: 1080px; /* 고정 높이 */
-    background-image: url("../img/main.png"); /* 메인 이미지 경로 */
+    background-image: url("../assets/image/main.png"); /* 메인 이미지 경로 */
     background-size: cover; /* 비율 유지하며 채우기 */
     background-position: center; /* 중앙 정렬 */
     background-repeat: no-repeat; /* 반복 제거 */

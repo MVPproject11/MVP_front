@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import KakaoIcon from "../img/kakao.png"; // 이미지 파일 import
-import NaverIcon from "../img/naver.png"; // 이미지 파일 import
+import KakaoIcon from "../assets/image/kakao.png"; // 이미지 파일 import
+import NaverIcon from "../assets/image/naver.png"; // 이미지 파일 import
 
 const SocialLoginContainer = styled.div`
     display: flex;

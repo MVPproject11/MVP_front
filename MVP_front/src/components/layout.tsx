@@ -1,6 +1,6 @@
 import React from "react";
 import "./layout.css";
-import logo from "../img/logo.png";
+import logo from "../assets/image/logo.png";
 
 interface LayoutProps {
   children: React.ReactNode; // 자식 요소를 받을 props

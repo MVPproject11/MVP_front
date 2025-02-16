@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import vIcon from "../img/v.png"; 
+import vIcon from "../assets/image/v.png"; 
 
 const EmailInputContainer = styled.div`
   display: flex;
