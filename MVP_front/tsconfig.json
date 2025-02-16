@@ -1,31 +1,34 @@
 {
   "compilerOptions": {
-    /* Language and Environment */
-    "target": "es2016",                                  /* Set the JavaScript language version for emitted JavaScript. */
-    "jsx": "react-jsx",                                  /* Enable JSX syntax support for React. */
-
-    /* Modules */
-    "module": "commonjs",                                /* Specify what module code is generated. */
-    "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for CommonJS modules. */
-    "forceConsistentCasingInFileNames": true,            /* Ensure imports have consistent casing. */
-    "resolveJsonModule": true,                           /* Enable importing .json files. */
-    "skipLibCheck": true,                                /* Skip type checking for all declaration files. */
-
-    /* Type Checking */
-    "strict": true,                                      /* Enable all strict type-checking options. */
-    "noImplicitAny": true,                               /* Report errors for expressions and declarations with an implied 'any' type. */
-
-    /* Emit */
-    "declaration": true,                                 /* Generate .d.ts files for TypeScript files. */
-    "sourceMap": true,                                   /* Generate source maps for debugging. */
-    "outDir": "./dist",                                  /* Specify output folder for all emitted files. */
-
-    /* Root Directories */
-    "baseUrl": "./",                                     /* Base directory for resolving non-relative module names. */
-    "paths": {                                           /* Custom paths for imports (optional). */
-      "@/*": ["src/*"]
-    }
+    "target": "es2016",
+    "jsx": "preserve",
+    "module": "esnext",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "noEmit": true
   },
-  "include": ["src"],                                    /* Files to include in the project. */
-  "exclude": ["node_modules", "dist"]                   /* Files or folders to exclude from the project. */
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

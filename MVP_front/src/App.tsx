@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
 import { Routes, Route } from 'react-router-dom'; 
-import Login from './routes/loginMain';
-import FindId from './routes/findIdMain';
-import FindPassword from './routes/findPasswordMain';
+import Login from './pages/loginMain';
+import FindId from './pages/findIdMain';
+import FindPassword from './pages/findPasswordMain';
 
 function App() {
   return (
@@ -11,8 +11,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/lonin" element={<Login />} />
-        <Route path="/find-id" element={<FindId />} /> {/* 아이디 찾기 페이지 */}
-        <Route path="/find-password" element={<FindPassword />} /> {/* 아이디 찾기 페이지 */}
+        <Route path="/find-id" element={<FindId />} /> 
+        <Route path="/find-password" element={<FindPassword />} /> 
       </Routes>
     </div>
   );
