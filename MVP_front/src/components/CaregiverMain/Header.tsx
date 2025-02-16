@@ -4,7 +4,7 @@ import LOGO from "../../assets/image/logo.png";
 import Alarm from "../../assets/image/alarm.png";
 
 const HeaderContainer = styled.header`
-  width: 100%;
+  width: 80%;
   height: 4rem;
   border-bottom: 1px solid #e5e7eb;
   background-color: white;
@@ -13,21 +13,20 @@ const HeaderContainer = styled.header`
   left: 0;
   z-index: 50;
   display: flex;
-  justify-content: center;
 `;
 
 const HeaderContent = styled.div`
   width: 100%;
-  max-width: 1120px;
-  height: 100%;
+  margin-top: 30px;
+  max-width: full;
+  height: 30%;
   padding: 0 1rem;
   display: flex;
   justify-content: space-between;
-  align-items: center;
 `;
 
 const Logo = styled.span`
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -37,31 +36,24 @@ const Logo = styled.span`
   }
 `;
 
+const LogoImage = styled.img`
+    width : 100px;
+    height: 40px;
+`
+
+const AlarmImage = styled.img`
+    width: 30px;
+    height: 30px;
+    margin-bottom: 10px;
+`
 const NotificationButton = styled.button`
   position: relative;
   padding: 0.5rem;
-  border-radius: 9999px;
-  background: transparent;
-  transition: background-color 0.2s;
+  border-radius: none;
+  background-color: transparent;
+  border: none;
+  margin-bottom: 10px;
   
-  &:hover {
-    background-color: #f3f4f6;
-  }
-`;
-
-const NotificationBadge = styled.span`
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 1.25rem;
-  height: 1.25rem;
-  background-color: #ef4444;
-  color: white;
-  font-size: 0.75rem;
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const Header = () => {
@@ -71,14 +63,11 @@ const Header = () => {
     <HeaderContainer>
       <HeaderContent>
         <Logo>
-          <img src={LOGO} alt="로고" className='w-6 h-10'/>
+          <LogoImage src={LOGO} alt="로고"/>
         </Logo>
 
         <NotificationButton aria-label="알림">
-          <img src={Alarm} alt="알림 아이콘" className='w-6 h-6 text-gray-600'/>
-          {notificationCount > 0 && (
-            <NotificationBadge>{notificationCount}</NotificationBadge>
-          )}
+          <AlarmImage src={Alarm} alt="알림 아이콘" className='w-6 h-6 text-gray-600'/>
         </NotificationButton>
       </HeaderContent>
     </HeaderContainer>

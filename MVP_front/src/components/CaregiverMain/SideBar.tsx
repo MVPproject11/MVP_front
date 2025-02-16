@@ -11,6 +11,9 @@ const SidebarContainer = styled.div`
   min-height: 100vh;
   background-color: white;
   border-right: 1px solid #e5e7eb;
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Header = styled.div`
@@ -68,7 +71,6 @@ const Nav = styled.nav`
 `;
 
 const MenuItemContainer = styled.div<{ isActive: boolean }>`
-  display: flex;
   align-items: center;
   padding: 0.75rem 1rem;
   cursor: pointer;

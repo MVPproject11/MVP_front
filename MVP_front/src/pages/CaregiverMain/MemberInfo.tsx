@@ -68,7 +68,8 @@ const MemberInfoForm = () => {
         <Header/>
     <div className="flex flex-1">
         <SideBar/>
-    <div className="max-w-3xl mx-auto p-6">
+
+    <div className="min-h-screen bg-gray-50 flex-1">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-bold">회원 정보 관리</h1>
         <button
