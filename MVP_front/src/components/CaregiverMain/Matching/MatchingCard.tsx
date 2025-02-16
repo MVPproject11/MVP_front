@@ -30,8 +30,9 @@ const NameText = styled.div`
 `;
 
 interface ProfileComponentProps {
-  name: string;
-  imageUrl: string | null;
+    imageUrl: string | null;
+    name: string;
+    status: 'active' | 'inactive';
 }
 
 const ProfileComponent: React.FC<ProfileComponentProps> = ({ name = '000 어르신', imageUrl = Default }) => {
