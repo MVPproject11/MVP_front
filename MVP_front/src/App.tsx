@@ -7,6 +7,8 @@ import FindPassword from './pages/findPasswordMain';
 import WorkConditions from './pages/CaregiverMain/WorkSetting';
 import MemberInfoForm from './pages/CaregiverMain/MemberInfo';
 import Matching from './pages/CaregiverMain/Matching';
+import AddDetail from "./pages/Admin/AddDetail";
+import SeniorRegistration from './pages/Admin/SeniorRegistraion';
 
 function App() {
   return (
@@ -18,7 +20,9 @@ function App() {
         <Route path="/find-password" element={<FindPassword />} />
         <Route path="/work-settings" element={<WorkConditions/>}/>
         <Route path="/matching" element={<Matching/>}/>
-        <Route path="/setting" element={<MemberInfoForm/>}/>
+        <Route path="/settings" element={<MemberInfoForm/>}/>
+        <Route path="/AddDetail" element={<AddDetail/>}/>
+        <Route path="/SeniorRegistration" element={<SeniorRegistration/>}/>
       </Routes>
     </div>
   );

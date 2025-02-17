@@ -2,6 +2,8 @@ import React from "react";
 import ProfileComponent from "src/components/CaregiverMain/Matching/MatchingCard";
 import styled from 'styled-components';
 import { Home, Users, Settings } from 'lucide-react';
+import Add from "../../assets/image/add.png";
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -63,6 +65,7 @@ const NavItem = styled.a<{ active?: boolean }>`
   background-color: ${(props) => (props.active ? '#fef9c3' : 'transparent')};
   border-radius: 0.5rem;
   text-decoration: none;
+  transition: background-color 0.3s ease;
   &:hover {
     background-color: #f3f4f6;
   }
@@ -90,45 +93,26 @@ interface MatchingCardProps {
     image: string;
     name: string;
     status: 'active' | 'inactive';
-  }
+}
+
+const dummyData: MatchingCardProps[] = [
+  { image: '/api/placeholder/200/200', name: '홍길동 어르신', status: 'active' },
+  { image: '/api/placeholder/200/200', name: '홍길동 어르신', status: 'active' },
+  { image: '/api/placeholder/200/200', name: '홍길동 어르신', status: 'active' },
+  { image: '/api/placeholder/200/200', name: '김영희 어르신', status: 'inactive' },
+  { image: '/api/placeholder/200/200', name: '김영희 어르신', status: 'inactive' },
+  { image: '/api/placeholder/200/200', name: '김영희 어르신', status: 'inactive' },
+];
+
+const SeniorRegistration = () => {
+  const navigate = useNavigate();
   
-  const dummyData: MatchingCardProps[] = [
-    {
-      image: '/api/placeholder/200/200',
-      name: '홍길동 어르신',
-      status: 'active'
-    },
-    {
-      image: '/api/placeholder/200/200',
-      name: '홍길동 어르신',
-      status: 'active'
-    },
-    {
-      image: '/api/placeholder/200/200',
-      name: '홍길동 어르신',
-      status: 'active'
-    },
-    {
-      image: '/api/placeholder/200/200',
-      name: '김영희 어르신',
-      status: 'inactive'
-    },
-    {
-      image: '/api/placeholder/200/200',
-      name: '김영희 어르신',
-      status: 'inactive'
-    },
-    {
-      image: '/api/placeholder/200/200',
-      name: '김영희 어르신',
-      status: 'inactive'
-    }
-  ];
+  const handleClick = () => {
+    navigate('/AddDetail');
+  }
 
-
-  const Matching = () => {
-    return (
-      <Container>
+  return (
+    <Container>
       <Header>
         <span className="text-xl font-bold">함께돌봄</span>
         <button>🔔</button>
@@ -136,13 +120,13 @@ interface MatchingCardProps {
       <ContentWrapper>
         <Sidebar>
           <Nav>
-            <NavItem href="#">
+            <NavItem href="/SeniorRegistration" active>
               <Home size={20} style={{ marginRight: '0.75rem' }} /> 내 프로필
             </NavItem>
             <NavItem href="/work-settings">
               <Users size={20} style={{ marginRight: '0.75rem' }} /> 근무 조건 설정
             </NavItem>
-            <NavItem href="/matching" active>
+            <NavItem href="/matching">
               <Settings size={20} style={{ marginRight: '0.75rem' }} /> 매칭 관리
             </NavItem>
             <NavItem href="/settings">
@@ -151,18 +135,24 @@ interface MatchingCardProps {
           </Nav>
         </Sidebar>
         <MainContent>
-        <GridWrapper>
-          <Title>매칭 관리</Title>
+          <GridWrapper>
+            <Title>어르신 정보 등록</Title>
+              <img
+                src={Add}
+                alt="Add"
+                style={{ width: '100%', cursor: 'pointer' }}
+                onClick={handleClick}
+              />
             <Grid>
               {dummyData.map((card, index) => (
                 <ProfileComponent key={index} image={card.image} name={card.name} status={card.status} />
               ))}
             </Grid>
-        </GridWrapper>
+          </GridWrapper>
         </MainContent>
       </ContentWrapper>
-    </Container>  
-    );
-  };
+    </Container>
+  );
+};
 
-  export default Matching;
+export default SeniorRegistration;

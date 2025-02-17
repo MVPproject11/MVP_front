@@ -1,254 +1,356 @@
 import React, { useState } from 'react';
-import Header from 'src/components/CaregiverMain/Header';
-import SideBar from 'src/components/CaregiverMain/SideBar';
 import YellowToggleSwitch from '../../components/CaregiverMain/MemberInfo/Toggle';
+import styled from 'styled-components';
+import { Home, Users, Settings } from 'lucide-react';
 
-interface MemberInfo {
-  name: string;
-  phone: string;
-  gender: 'male' | 'female' | null;
-  address: string;
-  certifications: {
-    caregiving: {
-      number: string;
-      year: string;
-    };
-    social: {
-      number: string;
-      year: string;
-    };
-    nursing: {
-      number: string;
-      year: string;
-      cityCode: string;
-    };
-    nursingHome: {
-      number: string;
-    };
-  };
-  preferences: {
-    carePossible: boolean;
-    sellPossible: boolean;
-  };
-}
+const Container = styled.div`
+  min-height: 100vh;
+  background-color: #f9fafb;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Header = styled.header`
+  height: 4rem;
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem;
+`;
+
+const Sidebar = styled.aside`
+  width: 15rem;
+  min-height: calc(100vh - 4rem);
+  background-color: white;
+  border-right: 1px solid #e5e7eb;
+  padding: 1.5rem;
+`;
+
+const ContentWrapper = styled.div`
+  display: flex;
+  flex: 1;
+`;
+
+const MainContent = styled.main`
+  flex: 1;
+  padding: 2rem;
+  max-width: 64rem;
+`;
+
+const Title = styled.h1`
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+`;
+
+const GridWrapper = styled.div`
+  padding: 1.5rem;
+`;
+
+const FormWrapper = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+`;
+
+const Section = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const FormField = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+  }
+`;
+
+const GenderButton = styled.button<{ active: boolean; disabled?: boolean }>`
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  border: 1px solid ${(props) => (props.active ? '#eab308' : '#e5e7eb')};
+  background-color: ${(props) => (props.active ? '#fef9c3' : 'transparent')};
+  color: ${(props) => (props.active ? '#eab308' : '#374151')};
+  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+
+  &:hover {
+    background-color: ${(props) => (!props.disabled && !props.active ? '#f3f4f6' : 'transparent')};
+  }
+`;
+
+const CertificationField = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .inputs {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  input {
+    padding: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+  }
+`;
+
+const Button = styled.button`
+  padding: 0.5rem 1rem;
+  background-color: #eab308;
+  color: white;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+  &:hover {
+    background-color: #fbbf24;
+  }
+`;
+
+const AddressButton = styled.button`
+  padding: 0.5rem 1rem;
+  border: 1px solid #eab308;
+  background-color: transparent;
+  color: #eab308;
+  border-radius: 0.375rem;
+
+  &:hover {
+    background-color: #fef9c3;
+  }
+`;
+
+const Nav = styled.nav`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const NavItem = styled.a<{ active?: boolean }>`
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  color: ${(props) => (props.active ? '#eab308' : '#374151')};
+  background-color: ${(props) => (props.active ? '#fef9c3' : 'transparent')};
+  border-radius: 0.5rem;
+  text-decoration: none;
+  &:hover {
+    background-color: #f3f4f6;
+  }
+`;
 
 const MemberInfoForm = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [memberInfo, setMemberInfo] = useState<MemberInfo>({
+  const [memberInfo, setMemberInfo] = useState({
     name: '김재현',
     phone: '01012345678',
     gender: 'male',
     address: '서울시 서초구 잠원동 롯데캐슬아파트 000동 0000호',
     certifications: {
-      caregiving: {
-        number: '1234567',
-        year: '2025'
-      },
-      social: {
-        number: '12345',
-        year: '1'
-      },
-      nursing: {
-        number: '1234567',
-        year: '2025',
-        cityCode: ''
-      },
-      nursingHome: {
-        number: '123456'
-      }
+      caregiving: { number: '1234567', year: '2025' },
+      social: { number: '12345', year: '1' },
+      nursing: { number: '1234567', year: '2025', cityCode: '' },
+      nursingHome: { number: '123456' },
     },
-    preferences: {
-      carePossible: false,
-      sellPossible: false
-    }
+    preferences: { carePossible: false, sellPossible: false },
   });
 
   return (
-    <div className="min-h-screen flex flex-col">
-        <Header/>
-    <div className="flex flex-1">
-        <SideBar/>
+    <Container>
+      <Header>
+        <span className="text-xl font-bold">함께돌봄</span>
+        <button>🔔</button>
+      </Header>
 
-    <div className="min-h-screen bg-gray-50 flex-1">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">회원 정보 관리</h1>
-        <button
-          onClick={() => setIsEditing(!isEditing)}
-          className="px-4 py-2 bg-yellow-400 text-white rounded-lg hover:bg-yellow-500 transition-colors"
-        >
-          {isEditing ? '수정사항 저장' : '회원 정보 수정'}
-        </button>
-      </div>
+      <ContentWrapper>
+        <Sidebar>
+          <Nav>
+            <NavItem href="">
+              <Home size={20} style={{ marginRight: '0.75rem' }} /> 내 프로필
+            </NavItem>
+            <NavItem href="/work-settings">
+              <Users size={20} style={{ marginRight: '0.75rem' }} /> 근무 조건 설정
+            </NavItem>
+            <NavItem href="/matching">
+              <Settings size={20} style={{ marginRight: '0.75rem' }} /> 매칭 관리
+            </NavItem>
+            <NavItem href="/settings" active>
+              <Settings size={20} style={{ marginRight: '0.75rem' }} /> 회원 정보 관리
+            </NavItem>
+          </Nav>
+        </Sidebar>
 
-      <form className="space-y-6">
-        <div className="space-y-4">
-          <FormField label="이름" value={memberInfo.name} disabled={!isEditing} />
-          <FormField label="연락처" value={memberInfo.phone} disabled={!isEditing} />
-          
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">성별</label>
-            <div className="flex gap-2">
-              <GenderButton
-                active={memberInfo.gender === 'male'}
-                disabled={!isEditing}
-                onClick={() => isEditing && setMemberInfo({...memberInfo, gender: 'male'})}
-              >
-                남성
-              </GenderButton>
-              <GenderButton
-                active={memberInfo.gender === 'female'}
-                disabled={!isEditing}
-                onClick={() => isEditing && setMemberInfo({...memberInfo, gender: 'female'})}
-              >
-                여성
-              </GenderButton>
-            </div>
-          </div>
+        <MainContent>
+          <GridWrapper>
+            <Title>회원 정보 관리</Title>
+            <Button onClick={() => setIsEditing(!isEditing)}>
+              {isEditing ? '수정사항 저장' : '회원 정보 수정'}
+            </Button>
 
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">주소</label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={memberInfo.address}
-                disabled={!isEditing}
-                className="flex-1 p-2 border rounded-lg"
-              />
-              {isEditing && (
-                <button className="px-3 py-2 border border-yellow-400 text-yellow-400 rounded-lg hover:bg-yellow-50">
-                  주소찾기
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
+            <FormWrapper>
+              <Section>
+                <FormField>
+                  <label>이름</label>
+                  <input type="text" value={memberInfo.name} disabled={!isEditing} />
+                </FormField>
 
-        <div className="space-y-4">
-          <CertificationField
-            label="요양보호사 자격증"
-            number={memberInfo.certifications.caregiving.number}
-            year={memberInfo.certifications.caregiving.year}
-            disabled={!isEditing}
-          />
-          <CertificationField
-            label="사회복지사 자격증"
-            number={memberInfo.certifications.social.number}
-            year={memberInfo.certifications.social.year}
-            disabled={!isEditing}
-          />
-          <CertificationField
-            label="간호조무사 자격증 / 시도청 발급"
-            number={memberInfo.certifications.nursing.number}
-            year={memberInfo.certifications.nursing.year}
-            disabled={!isEditing}
-          />
-          <CertificationField
-            label="간호조무사 자격증 / 보건복지부 발급"
-            number={memberInfo.certifications.nursingHome.number}
-            disabled={!isEditing}
-            showYear={false}
-          />
-        </div>
+                <FormField>
+                  <label>연락처</label>
+                  <input type="text" value={memberInfo.phone} disabled={!isEditing} />
+                </FormField>
 
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <span className="text-sm">*차량 소유 여부</span>
-            <YellowToggleSwitch
-              checked={memberInfo.preferences.carePossible}
-              onCheckedChange={(checked) => 
-                setMemberInfo({
-                  ...memberInfo,
-                  preferences: {...memberInfo.preferences, carePossible: checked}
-                })
-              }
-              disabled={!isEditing}
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-sm">*치매교육 이수 여부</span>
-            <YellowToggleSwitch
-              checked={memberInfo.preferences.sellPossible}
-              onCheckedChange={(checked) => 
-                setMemberInfo({
-                  ...memberInfo,
-                  preferences: {...memberInfo.preferences, sellPossible: checked}
-                })
-              }
-              disabled={!isEditing}
-            />
-          </div>
-        </div>
-      </form>
-    </div>
-    </div>
-    </div>
+                <div>
+                  <label>성별</label>
+                  <div>
+                    <GenderButton
+                      active={memberInfo.gender === 'male'}
+                      disabled={!isEditing}
+                      onClick={() => isEditing && setMemberInfo({ ...memberInfo, gender: 'male' })}
+                    >
+                      남성
+                    </GenderButton>
+                    <GenderButton
+                      active={memberInfo.gender === 'female'}
+                      disabled={!isEditing}
+                      onClick={() => isEditing && setMemberInfo({ ...memberInfo, gender: 'female' })}
+                    >
+                      여성
+                    </GenderButton>
+                  </div>
+                </div>
+
+                <FormField>
+                  <label>주소</label>
+                  <div>
+                    <input
+                      type="text"
+                      value={memberInfo.address}
+                      disabled={!isEditing}
+                    />
+                    {isEditing && (
+                      <AddressButton>주소찾기</AddressButton>
+                    )}
+                  </div>
+                </FormField>
+              </Section>
+
+              <Section>
+                <CertificationField>
+                  <label>요양보호사 자격증</label>
+                  <div className="inputs">
+                    <input
+                      type="text"
+                      value={memberInfo.certifications.caregiving.year}
+                      disabled={!isEditing}
+                      placeholder="제"
+                    />
+                    <input
+                      type="text"
+                      value={memberInfo.certifications.caregiving.number}
+                      disabled={!isEditing}
+                      placeholder="호"
+                    />
+                  </div>
+                </CertificationField>
+
+                <CertificationField>
+                  <label>사회복지사 자격증</label>
+                  <div className="inputs">
+                    <input
+                      type="text"
+                      value={memberInfo.certifications.social.year}
+                      disabled={!isEditing}
+                      placeholder="제"
+                    />
+                    <input
+                      type="text"
+                      value={memberInfo.certifications.social.number}
+                      disabled={!isEditing}
+                      placeholder="호"
+                    />
+                  </div>
+                </CertificationField>
+
+                <CertificationField>
+                  <label>간호조무사 자격증 / 시도청 발급</label>
+                  <div className="inputs">
+                    <input
+                      type="text"
+                      value={memberInfo.certifications.nursing.year}
+                      disabled={!isEditing}
+                      placeholder="제"
+                    />
+                    <input
+                      type="text"
+                      value={memberInfo.certifications.nursing.number}
+                      disabled={!isEditing}
+                      placeholder="호"
+                    />
+                  </div>
+                </CertificationField>
+
+                <CertificationField>
+                  <label>간호조무사 자격증 / 보건복지부 발급</label>
+                  <div className="inputs">
+                    <input
+                      type="text"
+                      value={memberInfo.certifications.nursingHome.number}
+                      disabled={!isEditing}
+                      placeholder="호"
+                    />
+                  </div>
+                </CertificationField>
+              </Section>
+
+              <Section>
+                <div>
+                  <span className="text-sm">*차량 소유 여부</span>
+                  <YellowToggleSwitch
+                    checked={memberInfo.preferences.carePossible}
+                    onCheckedChange={(checked) => setMemberInfo({
+                      ...memberInfo,
+                      preferences: { ...memberInfo.preferences, carePossible: checked }
+                    })}
+                    disabled={!isEditing}
+                  />
+                </div>
+
+                <div>
+                  <span className="text-sm">*치매교육 이수 여부</span>
+                  <YellowToggleSwitch
+                    checked={memberInfo.preferences.sellPossible}
+                    onCheckedChange={(checked) => setMemberInfo({
+                      ...memberInfo,
+                      preferences: { ...memberInfo.preferences, sellPossible: checked }
+                    })}
+                    disabled={!isEditing}
+                  />
+                </div>
+              </Section>
+            </FormWrapper>
+          </GridWrapper>
+        </MainContent>
+      </ContentWrapper>
+    </Container>
   );
 };
-
-const FormField: React.FC<{
-  label: string;
-  value: string;
-  disabled?: boolean;
-}> = ({ label, value, disabled }) => (
-  <div className="space-y-2">
-    <label className="block text-sm font-medium">{label}</label>
-    <input
-      type="text"
-      value={value}
-      disabled={disabled}
-      className="w-full p-2 border rounded-lg"
-    />
-  </div>
-);
-
-const GenderButton: React.FC<{
-  children: React.ReactNode;
-  active: boolean;
-  disabled?: boolean;
-  onClick?: () => void;
-}> = ({ children, active, disabled, onClick }) => (
-  <button
-    type="button"
-    onClick={onClick}
-    disabled={disabled}
-    className={`px-4 py-2 rounded-lg border transition-colors
-      ${active 
-        ? 'bg-yellow-50 border-yellow-400 text-yellow-400' 
-        : 'border-gray-200 text-gray-500'
-      } ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-yellow-50'}`}
-  >
-    {children}
-  </button>
-);
-
-const CertificationField: React.FC<{
-  label: string;
-  number: string;
-  year?: string;
-  disabled?: boolean;
-  showYear?: boolean;
-}> = ({ label, number, year, disabled, showYear = true }) => (
-  <div className="space-y-2">
-    <label className="block text-sm font-medium">{label}</label>
-    <div className="flex gap-2">
-      {showYear && (
-        <input
-          type="text"
-          value={year}
-          disabled={disabled}
-          className="w-20 p-2 border rounded-lg"
-          placeholder="제"
-        />
-      )}
-      <input
-        type="text"
-        value={number}
-        disabled={disabled}
-        className="flex-1 p-2 border rounded-lg"
-        placeholder="호"
-      />
-    </div>
-  </div>
-);
 
 export default MemberInfoForm;

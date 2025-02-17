@@ -14,6 +14,7 @@ const SidebarContainer = styled.div`
   margin-top: 4rem;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
 `;
 
 const Header = styled.div`
@@ -71,19 +72,20 @@ const Nav = styled.nav`
 `;
 
 const MenuItemContainer = styled.div<{ isActive: boolean }>`
+  display: flex; /* 요소가 가로로 정렬되도록 설정 */
   align-items: center;
   padding: 0.75rem 1rem;
   cursor: pointer;
   transition: background-color 0.2s;
-  background-color: ${(props) => (props.isActive ? '#fffbeb' : 'transparent')};
+  background-color: ${(props) => (props.isActive ? '#fef3c7' : 'transparent')}; 
   &:hover {
-    background-color: #f9fafb;
+    background-color: #fef3c7; 
   }
 `;
 
 const MenuIcon = styled.span<{ isActive: boolean }>`
   margin-right: 0.75rem;
-  color: ${(props) => (props.isActive ? '#fbbf24' : '#6b7280')};
+  color: ${(props) => (props.isActive ? '#facc15' : '#6b7280')}; 
 `;
 
 export default function SideBar() {
@@ -101,16 +103,11 @@ export default function SideBar() {
     const handleMenuItemClick = (menuItem: string, path: string) => {
         setActiveMenuItem(menuItem);
         navigate(path);
-      };
-
-    const handleProfileClick = () => {
-        setIsCollapsed(!isCollapsed);
-        setActiveMenuItem('내 프로필');
     };
 
     return (
         <SidebarContainer>
-            <Header onClick={() => setIsCollapsed(!isCollapsed)}>
+            <Header>
                 <h1 className="text-xl font-bold">마이페이지</h1>
             </Header>
 
@@ -126,11 +123,11 @@ export default function SideBar() {
             </CollapsibleContent>
 
             <Nav>
-                <MenuItem
+                <MenuItem 
                     icon={<img src={User} alt="User Icon" className="w-5 h-5" />}
                     text="내 프로필"
                     isActive={activeMenuItem === '내 프로필'}
-                    onClick={handleProfileClick}
+                    onClick={() => setIsCollapsed(!isCollapsed)}
                 />
                 <MenuItem
                     icon={<img src={WorkSetting} alt="Work Setting Icon" className="w-5 h-5" />}
@@ -166,7 +163,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ icon, text, isActive = false, onCli
     return (
         <MenuItemContainer isActive={isActive} onClick={onClick}>
             <MenuIcon isActive={isActive}>{icon}</MenuIcon>
-            <span className={isActive ? 'font-medium' : ''}>{text}</span>
+            <span className={isActive ? 'text-yellow-500 font-medium' : ''}>{text}</span> 
         </MenuItemContainer>
     );
 };
