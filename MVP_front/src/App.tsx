@@ -9,6 +9,10 @@ import MemberInfoForm from './pages/CaregiverMain/MemberInfo';
 import Matching from './pages/CaregiverMain/Matching';
 import AddDetail from "./pages/Admin/AddDetail";
 import SeniorRegistration from './pages/Admin/SeniorRegistraion';
+import MatchingDetail from "./pages/Admin/matchingDetail";
+import MatchRequest from './pages/Admin/MatchRequest';
+import ManageDetail from './pages/Admin/ManageDetail';
+import MyProfile from './pages/Admin/myProfileManagement';
 
 function App() {
   return (
@@ -23,6 +27,11 @@ function App() {
         <Route path="/settings" element={<MemberInfoForm/>}/>
         <Route path="/AddDetail" element={<AddDetail/>}/>
         <Route path="/SeniorRegistration" element={<SeniorRegistration/>}/>
+        <Route path="/MatchingDetail" element={<MatchingDetail/>}/>
+        <Route path="/matchrequest" element={<MatchRequest/>}/>
+        <Route path="/manageDetail" element={<ManageDetail/>}/>
+        <Route path="/myprofile" element={<MyProfile/>}/>
+        
       </Routes>
     </div>
   );
