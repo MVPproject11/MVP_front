@@ -183,7 +183,7 @@ const MyProfile = () => {
       <ContentWrapper>
         <Sidebar>
           <Nav>
-            <NavItem href="">
+            <NavItem href="/SeniorRegistration">
               <Home size={20} style={{ marginRight: '0.75rem' }} /> 내 프로필
             </NavItem>
             <NavItem href="/work-settings">
