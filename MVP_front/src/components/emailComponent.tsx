@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import vIcon from "../img/v.png"; 
+import vIcon from "../img/v.png";
 
 const EmailInputContainer = styled.div`
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #E1E3E6;
+  border-bottom: 1px solid #e1e3e6;
   width: 100%;
   position: relative;
 `;
@@ -21,7 +21,7 @@ const Input = styled.input`
   color: #111;
 
   ::placeholder {
-    color: #AAA;
+    color: #aaa;
     font-family: Pretendard;
     font-size: 16px;
     font-style: normal;
@@ -101,8 +101,8 @@ const DropdownItem = styled.li`
 const EmailInputGroup = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [isCustomInput, setIsCustomInput] = useState(false); // 직접입력 모드 상태
-  const [customInputValue, setCustomInputValue] = useState(""); // 사용자 입력 값
+  const [isCustomInput, setIsCustomInput] = useState(false);
+  const [customInputValue, setCustomInputValue] = useState("");
 
   const options = [
     "naver.com",
@@ -119,10 +119,10 @@ const EmailInputGroup = () => {
 
   const selectOption = (option: string) => {
     if (option === "직접입력") {
-      setIsCustomInput(true); // 직접입력 모드 활성화
-      setSelectedOption(""); // 기본 선택값 초기화
+      setIsCustomInput(true);
+      setSelectedOption("");
     } else {
-      setIsCustomInput(false); // 직접입력 모드 비활성화
+      setIsCustomInput(false);
       setSelectedOption(option);
     }
     setIsOpen(false);
@@ -133,7 +133,14 @@ const EmailInputGroup = () => {
   };
 
   const handleIconClick = () => {
-    setIsOpen(true); // 드롭다운 항상 열리게 설정
+    if (isCustomInput) {
+      // 직접 입력 모드에서 드롭다운 모드로 전환
+      setIsCustomInput(false);
+      setIsOpen(true); // 드롭다운 열기
+    } else {
+      // 드롭다운 모드에서 상태 토글
+      setIsOpen((prev) => !prev);
+    }
   };
 
   return (
@@ -141,7 +148,7 @@ const EmailInputGroup = () => {
       <Input type="text" placeholder="이메일 입력" />
       <AtText>@</AtText>
       <SelectWrapper>
-        {!isCustomInput ? ( // 기본 Select 또는 드롭다운 모드
+        {!isCustomInput ? (
           <>
             <SelectButton onClick={toggleDropdown}>
               {selectedOption || "이메일 선택"}
@@ -150,18 +157,15 @@ const EmailInputGroup = () => {
             {isOpen && (
               <DropdownMenu>
                 {options.map((option) => (
-                  <DropdownItem
-                    key={option}
-                    onClick={() => selectOption(option)}
-                  >
+                  <DropdownItem key={option} onClick={() => selectOption(option)}>
                     {option}
                   </DropdownItem>
                 ))}
               </DropdownMenu>
             )}
           </>
-        ) : ( // 직접입력 모드
-          <>
+        ) : (
+          <div style={{ position: "relative", flex: 1 }}>
             <Input
               type="text"
               placeholder="직접 입력"
@@ -169,7 +173,7 @@ const EmailInputGroup = () => {
               onChange={handleCustomInputChange}
             />
             <SelectIcon src={vIcon} alt="화살표 아이콘" onClick={handleIconClick} />
-          </>
+          </div>
         )}
       </SelectWrapper>
     </EmailInputContainer>

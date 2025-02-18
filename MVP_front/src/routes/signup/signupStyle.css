@@ -1,0 +1,9 @@
+.container {
+    display: flex; /* Flexbox 활성화 */
+    align-items: center;
+    flex-direction: column; /* 세로 방향으로 정렬 */
+    min-height: 100vh; /* 화면 전체 높이 */
+    padding: 20px; /* 여백 추가 (선택 사항) */
+    background-color: #f9f9f9; /* 배경색 (선택 사항) */
+    box-sizing: border-box; /* padding 포함 크기 계산 */
+  }

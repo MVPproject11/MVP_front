@@ -99,7 +99,7 @@ export default function FindPasswordMain(){
                 <Spacer height={8}/>
                 <LinkContainer>
                     <StyledLinkComponent href="/login" text="로그인" />
-                    <StyledLinkComponent href="/find-id" text="아이디찾기" />
+                    {/* <StyledLinkComponent href="/find-id" text="아이디찾기" /> */}
                 </LinkContainer>
                 <Spacer height={40}/>
                 <SocialLogin/>

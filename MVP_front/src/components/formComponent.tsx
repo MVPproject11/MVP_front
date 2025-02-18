@@ -22,7 +22,7 @@ export const Label = styled.label`
 
 export const FormInput = styled.input`
   display: flex;
-  height: 22px;
+  height: 22.75px;
   padding: 12px 16px;
   align-items: center;
   gap: 10px;

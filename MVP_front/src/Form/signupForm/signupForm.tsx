@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import SocialLogin from "../components/socialLogin";
-import StyledLinkComponent from "../components/styledLinkComponent";
-import Button1 from "../components/button1";
-import Button2 from "../components/button2";
-import { FormGroup, Label, FormInput } from "../components/formComponent";
-import EmailInputGroup from "../components/emailComponent";
-import InputAndButton from "../components/inputAndButton";
+import SocialLogin from "../../components/socialLogin";
+import StyledLinkComponent from "../../components/styledLinkComponent";
+import Button1 from "../../components/button1";
+import Button2 from "../../components/button2";
+import { FormGroup, Label, FormInput } from "../../components/formComponent";
+import EmailInputGroup from "../../components/emailComponent";
+import InputAndButton from "../../components/inputAndButton";
 
 
 const FindPasswordFormContainer = styled.div`
@@ -71,16 +71,22 @@ const Hello = styled.div`
     height: 30px;
 `;
 
-export default function FindPasswordMain(){
-    console.log("FindPassword 컴포넌트 렌더링됨"); // 디버깅용
+export default function Signup(){
+    console.log("Signup 컴포넌트 렌더링됨"); // 디버깅용
     return(
         <div>
             <FindPasswordFormContainer>
                 <Title>회원가입</Title>
                 {/* 아이디 */}
                 <FormGroup>
-                    <Label>이메일</Label>
+                    <Label>*아이디</Label>
                     <EmailInputGroup />
+                </FormGroup>
+                <Spacer height={32}/>
+                {/* 이메일 인증 */}
+                <FormGroup>
+                    <Label>*이메일 인증</Label>
+                    <InputAndButton type="text" id="check" placeholder="인증번호 입력" buttonText="인증번호 전송" />
                 </FormGroup>
                 <Spacer height={32}/>
                 {/* 비밀번호 */}
@@ -95,14 +101,9 @@ export default function FindPasswordMain(){
                     <FormInput type="password" id="password" placeholder="비밀번호 확인"/>
                 </FormGroup>
                 <Spacer height={40}/>
-                <Button1>비밀번호 찾기</Button1>
-                <Spacer height={8}/>
-                <LinkContainer>
-                    <StyledLinkComponent href="/login" text="로그인" />
-                    <StyledLinkComponent href="/find-id" text="아이디찾기" />
-                </LinkContainer>
+                <Button1>가입하기</Button1>
                 <Spacer height={40}/>
-                <SocialLogin/>
+                
             </FindPasswordFormContainer>
         </div>
     );
