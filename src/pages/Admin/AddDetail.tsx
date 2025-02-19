@@ -159,7 +159,8 @@ const NavItem = styled.a<{ active?: boolean }>`
 `;
 
 const AddDetail = ({ elderId }: { elderId: string }) => {
-    const { data :elderData, isLoading, error } = useElder(elderId);
+    const elderIdNumber = Number(elderId);
+    const { data: elderData, isLoading, error } = useElder(elderIdNumber);
     const [name, setName] = useState<string>('');
   const [birth, setBirth] = useState<string>('');
   const [gender, setGender] = useState<'M' | 'F'>('M');
@@ -203,7 +204,7 @@ const AddDetail = ({ elderId }: { elderId: string }) => {
         name,
         birth,
         gender,
-        weight,
+        weight: typeof weight === 'string' ? Number(weight) : weight,
         address,
         disease,
         housemate,
@@ -216,7 +217,7 @@ const AddDetail = ({ elderId }: { elderId: string }) => {
         dailyLivingAssists,
         image
     };
-    await updateElderData(UpdateData);
+    await updateElder(UpdateData);
   }
 
   const handleTagClick = async (tag: string) => {
