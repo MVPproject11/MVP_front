@@ -1,6 +1,129 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
+import { Location } from 'src/types/caregiver';
 
-const PlaceSelector: React.FC = () => {
+const Container = styled.div`
+  width: 100%;
+  max-width: 32rem;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+`;
+
+const Title = styled.h2`
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #eab308;
+  margin-bottom: 1.5rem;
+  text-align: center;
+`;
+
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+`;
+
+const Label = styled.p`
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+`;
+
+const DropdownContainer = styled.div`
+  flex: 1;
+`;
+
+const Separator = styled.div`
+  color: #d1d5db;
+  font-size: 1.5rem;
+  font-weight: 400;
+  padding-bottom: 0.25rem;
+`;
+
+const DropdownButton = styled.button`
+  width: 100%;
+  padding: 0.75rem;
+  text-align: left;
+  background-color: white;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  color: #1f2937;
+  font-size: 1rem;
+  &:focus {
+    outline: none;
+    border-color: #eab308;
+  }
+`;
+
+const OptionsContainer = styled.div`
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  margin-top: 0.25rem;
+  background-color: #4b5563;
+  border: 1px solid #374151;
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-height: 15rem;
+  overflow-y: auto;
+`;
+
+const OptionButton = styled.button`
+  width: 100%;
+  padding: 0.75rem;
+  text-align: left;
+  color: white;
+  font-size: 1rem;
+  background-color: transparent;
+  border-bottom: 1px solid #374151;
+  cursor: pointer;
+  &:hover {
+    background-color: #6b7280;
+  }
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+const SelectedContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+`;
+
+const SelectedItem = styled.div`
+  padding: 0.5rem 1.5rem;
+  border-radius: 9999px;
+  border: 1px solid #fbbf24;
+  font-size: 0.875rem;
+  color: #1f2937;
+`;
+
+const Button = styled.button`
+  width: 100%;
+  padding: 1rem;
+  background-color: #f3f4f6;
+  color: #374151;
+  font-size: 1rem;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: #e5e7eb;
+  }
+`;
+
+interface PlaceSelectorProps {
+    onClose: () => void;
+    onSelect: (selectedRegion: Location) => void;
+  }
+
+const PlaceSelector: React.FC<PlaceSelectorProps> = ({onClose, onSelect}) => {
   const [isOpenType, setIsOpenType] = useState<boolean>(false);
   const [isOpenStart, setIsOpenStart] = useState<boolean>(false);
   const [isOpenEnd, setIsOpenEnd] = useState<boolean>(false);
@@ -36,39 +159,35 @@ const PlaceSelector: React.FC = () => {
 
   const Dropdown: React.FC<DropdownProps> = ({ isOpen, options, onSelect, onToggle, selected }) => (
     <div className="relative">
-      <button
-        onClick={onToggle}
-        className="w-full px-4 py-2 text-left bg-white border rounded-md focus:outline-none"
-      >
+      <DropdownButton onClick={onToggle}>
         {selected || '선택'}
-      </button>
+      </DropdownButton>
       
       {isOpen && (
-        <div className="absolute z-10 w-full mt-1 bg-gray-700 border border-gray-600 rounded-md shadow-lg max-h-60 overflow-auto">
+        <OptionsContainer>
           {options.map((option) => (
-            <button
+            <OptionButton
               key={option}
               onClick={() => {
                 onSelect(option);
                 onToggle();
               }}
-              className="w-full px-4 py-2 text-left text-white hover:bg-gray-600 border-b border-gray-600 last:border-0"
             >
               {option}
-            </button>
+            </OptionButton>
           ))}
-        </div>
+        </OptionsContainer>
       )}
     </div>
   );
 
   return (
-    <div className="w-full max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-6">
-      <h2 className="text-xl font-medium text-yellow-500 mb-6 text-center">시간 추가</h2>
+    <Container>
+      <Title>시간 추가</Title>
       
-      <div className="flex items-center space-x-4 mb-6">
-        <div className="flex-1">
-          <p className="text-sm text-gray-600 mb-2">지역 선택</p>
+      <Row>
+        <DropdownContainer>
+          <Label>지역 선택</Label>
           <Dropdown
             isOpen={isOpenType}
             options={typeOptions}
@@ -76,12 +195,12 @@ const PlaceSelector: React.FC = () => {
             onToggle={() => setIsOpenType(!isOpenType)}
             selected={selectedType}
           />
-        </div>
+        </DropdownContainer>
         
-        <div className="text-gray-400 self-end pb-2">/</div>
+        <Separator>/</Separator>
         
-        <div className="flex-1">
-          <p className="text-sm text-gray-600 mb-2">시작시간</p>
+        <DropdownContainer>
+          <Label>시작시간</Label>
           <Dropdown
             isOpen={isOpenStart}
             options={startTimeOptions}
@@ -89,12 +208,12 @@ const PlaceSelector: React.FC = () => {
             onToggle={() => setIsOpenStart(!isOpenStart)}
             selected={selectedStart}
           />
-        </div>
+        </DropdownContainer>
         
-        <div className="text-gray-400 self-end pb-2">-</div>
+        <Separator>-</Separator>
         
-        <div className="flex-1">
-          <p className="text-sm text-gray-600 mb-2">종료시간</p>
+        <DropdownContainer>
+          <Label>종료시간</Label>
           <Dropdown
             isOpen={isOpenEnd}
             options={endTimeOptions}
@@ -102,21 +221,17 @@ const PlaceSelector: React.FC = () => {
             onToggle={() => setIsOpenEnd(!isOpenEnd)}
             selected={selectedEnd}
           />
-        </div>
-      </div>
+        </DropdownContainer>
+      </Row>
 
       {selectedType && selectedStart && selectedEnd && (
-        <div className="flex justify-center mb-6">
-          <div className="px-6 py-2 rounded-full border border-yellow-400 text-sm">
-            {`${selectedType}/${selectedStart}-${selectedEnd}`}
-          </div>
-        </div>
+        <SelectedContainer>
+          <SelectedItem>{`${selectedType}/${selectedStart}-${selectedEnd}`}</SelectedItem>
+        </SelectedContainer>
       )}
 
-      <button className="w-full bg-gray-100 text-gray-800 py-3 rounded-lg hover:bg-gray-200 transition-colors">
-        완료
-      </button>
-    </div>
+      <Button>완료</Button>
+    </Container>
   );
 };
 

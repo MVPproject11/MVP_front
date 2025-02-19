@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 import { Home, Users, Settings } from 'lucide-react';
-import React from 'react';
+import React, {useState} from 'react';
+import { useCaregiver } from 'src/hook/useCaregivers';
+import PlaceSelector from 'src/components/modals/PlaceSelector';
+import { Location } from 'src/types/caregiver';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -94,6 +97,36 @@ const Input = styled.input`
 `;
 
 const WorkConditions = () => {
+  const { update, caregiver } = useCaregiver();
+
+  // AvailableDay 구조체에 맞춰 초기값 설정
+  const [workTimes, setWorkTimes] = useState<string[]>(caregiver?.availableDays.map(day => day.availableDay) || []);
+  const [minWage, setMinWage] = useState<number>(caregiver?.desiredWage?.minWage || 12000);
+  const [maxWage, setMaxWage] = useState<number>(caregiver?.desiredWage?.maxWage || 15000);
+  const [regions, setRegions] = useState<Location[]>([]); // 지역 상태
+  const [isPlaceSelectorOpen, setIsPlaceSelectorOpen] = useState(false); 
+
+  const handleRegionAdd = (selectedRegion: Location) => {
+    setRegions((prev) => [...prev, selectedRegion]);
+  };
+
+  const handleWorkTimeAdd = (time: string) => {
+    setWorkTimes((prev) => [...prev, time]);
+  };
+
+  const handleSave = async () => {
+    const updatedData: {
+      locations: Location[];
+      availableDays: { availableDay: string }[];
+      desiredWage: { minWage: number; maxWage: number };  // ✅ 객체 형태로 변경
+  } = {
+      locations: [],  
+      availableDays: [],
+      desiredWage: { minWage: 12000, maxWage: 15000 },  // ✅ 객체 형태로 맞춤
+  };
+    await update(updatedData);
+  };
+
   return (
     <Container>
       <Header>
@@ -103,48 +136,70 @@ const WorkConditions = () => {
       <ContentWrapper>
         <Sidebar>
           <Nav>
-            <NavItem href="#">
-              <Home size={20} style={{ marginRight: '0.75rem' }} /> 내 프로필
+           <NavItem href="">
+            <Home size={20} style={{ marginRight: '0.75rem' }} /> 내 프로필
             </NavItem>
-            <NavItem href="/work-settings" active>
-              <Users size={20} style={{ marginRight: '0.75rem' }} /> 근무 조건 설정
+            <NavItem href="/work-settings">
+            <Users size={20} style={{ marginRight: '0.75rem' }} /> 근무 조건 설정
             </NavItem>
-            <NavItem href="/matching">
-              <Settings size={20} style={{ marginRight: '0.75rem' }} /> 매칭 관리
-            </NavItem>
-            <NavItem href="/settings">
+           <NavItem href="/matching">
+             <Settings size={20} style={{ marginRight: '0.75rem' }} /> 매칭 관리
+             </NavItem>
+            <NavItem href="/settings" active>
               <Settings size={20} style={{ marginRight: '0.75rem' }} /> 회원 정보 관리
-            </NavItem>
-          </Nav>
+               </NavItem>
+             </Nav>
         </Sidebar>
         <MainContent>
           <Section>
             <Title>근무 가능 지역</Title>
-            <TagContainer>
-              <TagButton>잠실동/서초</TagButton>
-              <TagButton>압구정동/강남</TagButton>
-              <TagButton>반포동/서초</TagButton>
-              <TagButton isAddButton={true}>+ 지역추가</TagButton>
-            </TagContainer>
+            <div>
+              <TagContainer>
+                {regions.map((region, idx) => (
+                  <TagButton key={idx}>
+                    {region.city} {region.district} {region.dong}
+                  </TagButton>
+                ))}
+                <TagButton isAddButton={true} onClick={() => setIsPlaceSelectorOpen(true)}>
+                  + 지역추가
+                </TagButton>
+              </TagContainer>
+              {isPlaceSelectorOpen && (
+                <PlaceSelector
+                  onClose={() => setIsPlaceSelectorOpen(false)} // 모달 닫기
+                  onSelect={handleRegionAdd} // 지역 선택 시 핸들러
+                />
+              )}
+            </div>
           </Section>
           <Section>
             <Title>근무 가능 시간</Title>
             <TagContainer>
-              <TagButton>월 / 화요일중</TagButton>
-              <TagButton>목 / 오전, 오후</TagButton>
-              <TagButton isAddButton={true}>+ 시간추가</TagButton>
+              {workTimes.map((time, idx) => (
+                <TagButton key={idx}>{time}</TagButton>
+              ))}
+              <TagButton isAddButton={true} onClick={() => handleWorkTimeAdd("새 시간")}>+ 시간추가</TagButton>
             </TagContainer>
           </Section>
           <Section>
             <Title>희망시급</Title>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <span>최소</span>
-              <Input type="text" defaultValue="12000" /> 원
+              <Input 
+                type="number" 
+                value={minWage} 
+                onChange={(e) => setMinWage(Number(e.target.value))} 
+              /> 원
               <span>~</span>
               <span>최대</span>
-              <Input type="text" defaultValue="15000" /> 원
+              <Input 
+                type="number" 
+                value={maxWage} 
+                onChange={(e) => setMaxWage(Number(e.target.value))} 
+              /> 원
             </div>
           </Section>
+          <button onClick={handleSave}>저장</button>
         </MainContent>
       </ContentWrapper>
     </Container>

@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import YellowToggleSwitch from '../../components/CaregiverMain/MemberInfo/Toggle';
 import styled from 'styled-components';
 import { Home, Users, Settings } from 'lucide-react';
+import { Caregiver } from 'src/types/caregiver';
+import { useCaregiver } from 'src/hook/useCaregivers';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -158,20 +160,26 @@ const NavItem = styled.a<{ active?: boolean }>`
 `;
 
 const MemberInfoForm = () => {
+  const { caregiver, loading, error, update } = useCaregiver();
   const [isEditing, setIsEditing] = useState(false);
-  const [memberInfo, setMemberInfo] = useState({
-    name: '김재현',
-    phone: '01012345678',
-    gender: 'male',
-    address: '서울시 서초구 잠원동 롯데캐슬아파트 000동 0000호',
-    certifications: {
-      caregiving: { number: '1234567', year: '2025' },
-      social: { number: '12345', year: '1' },
-      nursing: { number: '1234567', year: '2025', cityCode: '' },
-      nursingHome: { number: '123456' },
-    },
-    preferences: { carePossible: false, sellPossible: false },
-  });
+  const [memberInfo, setMemberInfo] = useState<Caregiver | null>(null);
+
+  useEffect(() => {
+    if (caregiver) {
+      setMemberInfo(caregiver);
+    }
+  }, [caregiver]);
+
+  const handleSave = async () => {
+    if (memberInfo) {
+      await update(memberInfo);
+      setIsEditing(false);
+    }
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!memberInfo) return <div>데이터 없음</div>;
 
   return (
     <Container>
@@ -201,7 +209,7 @@ const MemberInfoForm = () => {
         <MainContent>
           <GridWrapper>
             <Title>회원 정보 관리</Title>
-            <Button onClick={() => setIsEditing(!isEditing)}>
+            <Button onClick={isEditing ? handleSave : () => setIsEditing(true)}>
               {isEditing ? '수정사항 저장' : '회원 정보 수정'}
             </Button>
 
@@ -209,28 +217,38 @@ const MemberInfoForm = () => {
               <Section>
                 <FormField>
                   <label>이름</label>
-                  <input type="text" value={memberInfo.name} disabled={!isEditing} />
+                  <input
+                    type="text"
+                    value={memberInfo.name}
+                    onChange={(e) => setMemberInfo({ ...memberInfo, name: e.target.value })}
+                    disabled={!isEditing}
+                  />
                 </FormField>
 
                 <FormField>
                   <label>연락처</label>
-                  <input type="text" value={memberInfo.phone} disabled={!isEditing} />
+                  <input
+                    type="text"
+                    value={memberInfo.phoneNumber}
+                    onChange={(e) => setMemberInfo({ ...memberInfo, phoneNumber: e.target.value })}
+                    disabled={!isEditing}
+                  />
                 </FormField>
 
                 <div>
                   <label>성별</label>
                   <div>
                     <GenderButton
-                      active={memberInfo.gender === 'male'}
+                      active={memberInfo.gender === 'M'}
                       disabled={!isEditing}
-                      onClick={() => isEditing && setMemberInfo({ ...memberInfo, gender: 'male' })}
+                      onClick={() => isEditing && setMemberInfo({ ...memberInfo, gender: 'M' })}
                     >
                       남성
                     </GenderButton>
                     <GenderButton
-                      active={memberInfo.gender === 'female'}
+                      active={memberInfo.gender === 'F'}
                       disabled={!isEditing}
-                      onClick={() => isEditing && setMemberInfo({ ...memberInfo, gender: 'female' })}
+                      onClick={() => isEditing && setMemberInfo({ ...memberInfo, gender: 'F' })}
                     >
                       여성
                     </GenderButton>
@@ -242,81 +260,30 @@ const MemberInfoForm = () => {
                   <div>
                     <input
                       type="text"
-                      value={memberInfo.address}
-                      disabled={!isEditing}
+                      value={memberInfo.locations.map(loc => `${loc.city} ${loc.district} ${loc.dong}`).join(', ')}
+                      disabled
                     />
-                    {isEditing && (
-                      <AddressButton>주소찾기</AddressButton>
-                    )}
                   </div>
                 </FormField>
               </Section>
 
               <Section>
                 <CertificationField>
-                  <label>요양보호사 자격증</label>
-                  <div className="inputs">
-                    <input
-                      type="text"
-                      value={memberInfo.certifications.caregiving.year}
-                      disabled={!isEditing}
-                      placeholder="제"
-                    />
-                    <input
-                      type="text"
-                      value={memberInfo.certifications.caregiving.number}
-                      disabled={!isEditing}
-                      placeholder="호"
-                    />
-                  </div>
-                </CertificationField>
-
-                <CertificationField>
-                  <label>사회복지사 자격증</label>
-                  <div className="inputs">
-                    <input
-                      type="text"
-                      value={memberInfo.certifications.social.year}
-                      disabled={!isEditing}
-                      placeholder="제"
-                    />
-                    <input
-                      type="text"
-                      value={memberInfo.certifications.social.number}
-                      disabled={!isEditing}
-                      placeholder="호"
-                    />
-                  </div>
-                </CertificationField>
-
-                <CertificationField>
-                  <label>간호조무사 자격증 / 시도청 발급</label>
-                  <div className="inputs">
-                    <input
-                      type="text"
-                      value={memberInfo.certifications.nursing.year}
-                      disabled={!isEditing}
-                      placeholder="제"
-                    />
-                    <input
-                      type="text"
-                      value={memberInfo.certifications.nursing.number}
-                      disabled={!isEditing}
-                      placeholder="호"
-                    />
-                  </div>
-                </CertificationField>
-
-                <CertificationField>
-                  <label>간호조무사 자격증 / 보건복지부 발급</label>
-                  <div className="inputs">
-                    <input
-                      type="text"
-                      value={memberInfo.certifications.nursingHome.number}
-                      disabled={!isEditing}
-                      placeholder="호"
-                    />
-                  </div>
+                  <label>자격증 정보</label>
+                  {memberInfo.certifications.map((cert, index) => (
+                    <div key={index} className="inputs">
+                      <input
+                        type="text"
+                        value={cert.certificationType}
+                        disabled
+                      />
+                      <input
+                        type="text"
+                        value={cert.certificationNumber}
+                        disabled
+                      />
+                    </div>
+                  ))}
                 </CertificationField>
               </Section>
 
@@ -324,11 +291,8 @@ const MemberInfoForm = () => {
                 <div>
                   <span className="text-sm">*차량 소유 여부</span>
                   <YellowToggleSwitch
-                    checked={memberInfo.preferences.carePossible}
-                    onCheckedChange={(checked) => setMemberInfo({
-                      ...memberInfo,
-                      preferences: { ...memberInfo.preferences, carePossible: checked }
-                    })}
+                    checked={memberInfo.ownCar}
+                    onCheckedChange={(checked) => setMemberInfo({ ...memberInfo, ownCar: checked })}
                     disabled={!isEditing}
                   />
                 </div>
@@ -336,11 +300,8 @@ const MemberInfoForm = () => {
                 <div>
                   <span className="text-sm">*치매교육 이수 여부</span>
                   <YellowToggleSwitch
-                    checked={memberInfo.preferences.sellPossible}
-                    onCheckedChange={(checked) => setMemberInfo({
-                      ...memberInfo,
-                      preferences: { ...memberInfo.preferences, sellPossible: checked }
-                    })}
+                    checked={memberInfo.dementiaTraining}
+                    onCheckedChange={(checked) => setMemberInfo({ ...memberInfo, dementiaTraining: checked })}
                     disabled={!isEditing}
                   />
                 </div>

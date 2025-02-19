@@ -7,39 +7,6 @@ interface MatchingCardProps {
   status: 'active' | 'inactive';
 }
 
-const dummyData: MatchingCardProps[] = [
-  {
-    image: '/api/placeholder/200/200',
-    name: '홍길동 어르신',
-    status: 'active'
-  },
-  {
-    image: '/api/placeholder/200/200',
-    name: '홍길동 어르신',
-    status: 'active'
-  },
-  {
-    image: '/api/placeholder/200/200',
-    name: '홍길동 어르신',
-    status: 'active'
-  },
-  {
-    image: '/api/placeholder/200/200',
-    name: '김영희 어르신',
-    status: 'inactive'
-  },
-  {
-    image: '/api/placeholder/200/200',
-    name: '김영희 어르신',
-    status: 'inactive'
-  },
-  {
-    image: '/api/placeholder/200/200',
-    name: '김영희 어르신',
-    status: 'inactive'
-  }
-];
-
 const Card = styled.div<{ status: 'active' | 'inactive' }>`
   position: relative;
   border-radius: 0.75rem;

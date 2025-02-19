@@ -2,6 +2,7 @@ import React from "react";
 import ProfileComponent from "src/components/CaregiverMain/Matching/MatchingCard";
 import styled from 'styled-components';
 import { Home, Users, Settings } from 'lucide-react';
+import { useElders } from "../../hook/useElder";  // 어르신 목록 가져오는 훅
 
 const Container = styled.div`
   min-height: 100vh;
@@ -37,10 +38,6 @@ const MainContent = styled.main`
   flex: 1;
   padding: 2rem;
   max-width: 64rem;
-`;
-
-const Section = styled.div`
-  margin-bottom: 2rem;
 `;
 
 const Title = styled.h3`
@@ -86,49 +83,14 @@ const Grid = styled.div`
   }
 `;
 
-interface MatchingCardProps {
-    image: string;
-    name: string;
-    status: 'active' | 'inactive';
-  }
-  
-  const dummyData: MatchingCardProps[] = [
-    {
-      image: '/api/placeholder/200/200',
-      name: '홍길동 어르신',
-      status: 'active'
-    },
-    {
-      image: '/api/placeholder/200/200',
-      name: '홍길동 어르신',
-      status: 'active'
-    },
-    {
-      image: '/api/placeholder/200/200',
-      name: '홍길동 어르신',
-      status: 'active'
-    },
-    {
-      image: '/api/placeholder/200/200',
-      name: '김영희 어르신',
-      status: 'inactive'
-    },
-    {
-      image: '/api/placeholder/200/200',
-      name: '김영희 어르신',
-      status: 'inactive'
-    },
-    {
-      image: '/api/placeholder/200/200',
-      name: '김영희 어르신',
-      status: 'inactive'
-    }
-  ];
+const Matching = () => {
+  const { data: elders, isLoading, error } = useElders();
 
+  if (isLoading) return <p>로딩 중...</p>;
+  if (error) return <p>데이터를 불러오는 중 오류 발생!</p>;
 
-  const Matching = () => {
-    return (
-      <Container>
+  return (
+    <Container>
       <Header>
         <span className="text-xl font-bold">함께돌봄</span>
         <button>🔔</button>
@@ -151,18 +113,23 @@ interface MatchingCardProps {
           </Nav>
         </Sidebar>
         <MainContent>
-        <GridWrapper>
-          <Title>매칭 관리</Title>
+          <GridWrapper>
+            <Title>매칭 관리</Title>
             <Grid>
-              {dummyData.map((card, index) => (
-                <ProfileComponent key={index} image={card.image} name={card.name} status={card.status} />
+              {elders?.map((elder: any) => (
+                <ProfileComponent 
+                  key={elder.id} 
+                  image={elder.elderPhoto || '/default-profile.png'} 
+                  name={elder.name} 
+                  status={elder.careGrade ? 'active' : 'inactive'} 
+                />
               ))}
             </Grid>
-        </GridWrapper>
+          </GridWrapper>
         </MainContent>
       </ContentWrapper>
     </Container>  
-    );
-  };
+  );
+};
 
-  export default Matching;
+export default Matching;

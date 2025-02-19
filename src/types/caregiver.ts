@@ -6,7 +6,10 @@ export interface Caregiver {
     caregiverProfile: string;
     ownCar: boolean;
     dementiaTraining: boolean;
-    desiredWage: number;
+    desiredWage: {
+      minWage: number;
+      maxWage: number;
+    };
     careerPeriod: number;
     mainCareer: string;
     introduction: string;
