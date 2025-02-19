@@ -121,7 +121,8 @@ const Matching = () => {
                   key={elder.id} 
                   image={elder.elderPhoto || '/default-profile.png'} 
                   name={elder.name} 
-                  status={elder.careGrade ? 'active' : 'inactive'} 
+                  initialStatus={'inactive'}
+                  onClick={() => handleClick(elder.id)}
                 />
               ))}
             </Grid>

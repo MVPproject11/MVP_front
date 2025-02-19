@@ -15,19 +15,15 @@ export interface Elder {
     careStartTime: Time;
     careEndTime: Time;
     careDays: DayOfWeek[];
-    mealAssists: Assist[];
-    excretionAssists: Assist[];
-    moveAssists: Assist[];
-    dailyLivingAssists: Assist[];
+    mealAssists: string;
+    excretionAssists: string;
+    moveAssists: string;
+    dailyLivingAssists: string;
     socialWorkerIds: SocialWorkerId[];
   }
   
   interface DayOfWeek {
     dayOfWeek: string;
-  }
-  
-  interface Assist {
-    type: string;
   }
   
   interface SocialWorkerId {

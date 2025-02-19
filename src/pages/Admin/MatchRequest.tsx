@@ -1,8 +1,11 @@
-import React from "react";
-import ProfileComponent from "src/components/CaregiverMain/Matching/MatchingCard";
+import React, { useState } from "react";
+import MatchingCard from "src/components/CaregiverMain/Matching/MatchingCard";
 import styled from 'styled-components';
 import { Home, Users, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useElders } from "src/hook/useElder";
+import { Elder } from "src/types/elder";
+import { Caregiver } from "src/types/caregiver";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -88,26 +91,69 @@ const Grid = styled.div`
   }
 `;
 
-interface MatchingCardProps {
-    image: string;
-    name: string;
-    status: 'active' | 'inactive';
-}
+const ProfileWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
 
-const dummyData: MatchingCardProps[] = [
-  { image: '/api/placeholder/200/200', name: '홍길동 어르신', status: 'active' },
-  { image: '/api/placeholder/200/200', name: '홍길동 어르신', status: 'active' },
-  { image: '/api/placeholder/200/200', name: '홍길동 어르신', status: 'active' },
-  { image: '/api/placeholder/200/200', name: '김영희 어르신', status: 'inactive' },
-  { image: '/api/placeholder/200/200', name: '김영희 어르신', status: 'inactive' },
-  { image: '/api/placeholder/200/200', name: '김영희 어르신', status: 'inactive' },
-];
+  img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+  }
+
+  h4 {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+`;
+
+const CaregiversForElder = ({ elderId }: { elderId: number }) => {
+  const { data: caregivers, isLoading: caregiversLoading, isError: caregiversError, error: caregiversErrorData } = useCaregivers(elderId);
+  const navigate = useNavigate();
+  const [selectedCaregiverId, setSelectedCaregiverId] = useState<number | null>(null);
+
+  const handleClick = (caregiverId: number) => {
+    setSelectedCaregiverId(caregiverId);
+    navigate(`/ManageDetail/${elderId}`);
+  };
+
+  if (caregiversLoading) {
+    return <div>Loading caregivers...</div>;
+  }
+
+  if (caregiversError) {
+    return <div>Error loading caregivers: {caregiversErrorData.message}</div>;
+  }
+
+  return (
+    <Grid>
+      {caregivers.map((caregiver: Caregiver) => (
+        <MatchingCard
+          key={caregiver.id}
+          image={caregiver.caregiverProfile}
+          name={caregiver.name}
+          initialStatus={selectedCaregiverId === caregiver.id ? 'active' : 'inactive'}
+          onClick={() => handleClick(caregiver.id)}
+        />
+      ))}
+    </Grid>
+  );
+};
 
 const MatchRequest = () => {
-  const navigate = useNavigate();
-  const handleClick = () => {
-    navigate('/matchingDetail');
+  const { data: elders, isLoading: eldersLoading, isError: eldersError, error: eldersErrorData } = useElders();
+
+  if (eldersLoading) {
+    return <div>Loading...</div>;
   }
+
+  if (eldersError) {
+    return <div>Error loading elders: {eldersErrorData.message}</div>;
+  }
+
   return (
     <Container>
       <Header>
@@ -120,10 +166,10 @@ const MatchRequest = () => {
             <NavItem href="/SeniorRegistration">
               <Home size={20} style={{ marginRight: '0.75rem' }} /> 어르신 정보 등록
             </NavItem>
-            <NavItem href="/matchingDetail" active>
+            <NavItem href="/matchingDetail">
               <Users size={20} style={{ marginRight: '0.75rem' }} /> 매칭 요청
             </NavItem>
-            <NavItem href="/matching">
+            <NavItem href="/matchingManage" active>
               <Settings size={20} style={{ marginRight: '0.75rem' }} /> 매칭 관리
             </NavItem>
             <NavItem href="/settings">
@@ -133,19 +179,16 @@ const MatchRequest = () => {
         </Sidebar>
         <MainContent>
           <GridWrapper>
-            <Title>매칭 요청</Title>
-            <Grid>
-              {dummyData.map((card, index) => (
-                <button onClick={handleClick}>
-                    <ProfileComponent 
-                        key={index} 
-                        image={card.image} 
-                        name={card.name} 
-                        status={card.status}
-                    />
-                 </button>
-              ))}
-            </Grid>
+            <Title>매칭 관리</Title>
+            {elders.map((elder: Elder) => (
+              <Section key={elder.id}>
+                <ProfileWrapper>
+                  <img src={elder.elderPhoto} alt={`${elder.name} 어르신`} />
+                  <h4>{elder.name} 어르신</h4>
+                </ProfileWrapper>
+                <CaregiversForElder elderId={elder.id} />
+              </Section>
+            ))}
           </GridWrapper>
         </MainContent>
       </ContentWrapper>

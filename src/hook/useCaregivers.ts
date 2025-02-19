@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { getCaregiver, updateCaregiver, deleteCaregiver, registerCaregiver } from "../api/caregivers";
 import { Caregiver } from "../types/caregiver";
+import { useQuery } from "@tanstack/react-query";
+
 
 export const useCaregiver = () => {
   const [caregiver, setCaregiver] = useState<Caregiver | null>(null);
@@ -38,4 +40,11 @@ export const useCaregiver = () => {
   };
 
   return { caregiver, loading, error, update, remove, register };
+};
+
+export const useCaregivers = (elderId: number) => {
+  return useQuery({
+    queryKey: ["caregivers", elderId],
+    queryFn: () => getCaregiver(),
+  });
 };

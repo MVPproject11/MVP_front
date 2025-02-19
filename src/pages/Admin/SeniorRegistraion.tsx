@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Home, Users, Settings } from 'lucide-react';
 import Add from "../../assets/image/add.png";
 import { useNavigate } from 'react-router-dom';
+import { useElders, useElder } from "src/hook/useElder";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -39,10 +40,6 @@ const MainContent = styled.main`
   flex: 1;
   padding: 2rem;
   max-width: 64rem;
-`;
-
-const Section = styled.div`
-  margin-bottom: 2rem;
 `;
 
 const Title = styled.h3`
@@ -89,26 +86,27 @@ const Grid = styled.div`
   }
 `;
 
-interface MatchingCardProps {
-    image: string;
-    name: string;
-    status: 'active' | 'inactive';
+interface Elder {
+  id: number;
+  image: string;
+  name: string;
+  status: 'active' | 'inactive';
 }
-
-const dummyData: MatchingCardProps[] = [
-  { image: '/api/placeholder/200/200', name: '홍길동 어르신', status: 'active' },
-  { image: '/api/placeholder/200/200', name: '홍길동 어르신', status: 'active' },
-  { image: '/api/placeholder/200/200', name: '홍길동 어르신', status: 'active' },
-  { image: '/api/placeholder/200/200', name: '김영희 어르신', status: 'inactive' },
-  { image: '/api/placeholder/200/200', name: '김영희 어르신', status: 'inactive' },
-  { image: '/api/placeholder/200/200', name: '김영희 어르신', status: 'inactive' },
-];
 
 const SeniorRegistration = () => {
   const navigate = useNavigate();
-  
+  const { data: eldersData, isLoading, isError, error } = useElders();
+
   const handleClick = () => {
     navigate('/AddDetail');
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error: {error.message}</div>;
   }
 
   return (
@@ -137,21 +135,40 @@ const SeniorRegistration = () => {
         <MainContent>
           <GridWrapper>
             <Title>어르신 정보 등록</Title>
-              <img
-                src={Add}
-                alt="Add"
-                style={{ width: '100%', cursor: 'pointer' }}
-                onClick={handleClick}
-              />
+            <img
+              src={Add}
+              alt="Add"
+              style={{ width: '100%', cursor: 'pointer' }}
+              onClick={handleClick}
+            />
             <Grid>
-              {dummyData.map((card, index) => (
-                <ProfileComponent key={index} image={card.image} name={card.name} status={card.status} />
+              {eldersData.map((elder: Elder, index: number) => (
+                <ElderProfile key={index} elderId={elder.id} />
               ))}
             </Grid>
           </GridWrapper>
         </MainContent>
       </ContentWrapper>
     </Container>
+  );
+};
+
+const ElderProfile = ({ elderId }: { elderId: number }) => {
+  const { data: elderData, isLoading, isError, error } = useElder(elderId);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  return (
+    <ProfileComponent image={elderData.image} name={elderData.name} 
+        initialStatus={selectedCaregiverId === caregiver.id ? 'active' : 'inactive'}
+        onClick={() => handleClick(caregiver.id)}
+    />
   );
 };
 

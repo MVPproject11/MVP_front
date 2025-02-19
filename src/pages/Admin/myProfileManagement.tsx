@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import YellowToggleSwitch from '../../components/CaregiverMain/MemberInfo/Toggle';
 import styled from 'styled-components';
 import { Home, Users, Settings } from 'lucide-react';
+import { useElder, useUpdateElder, useDeleteElder } from 'src/hook/useElder';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -79,41 +80,6 @@ const FormField = styled.div`
   }
 `;
 
-const GenderButton = styled.button<{ active: boolean; disabled?: boolean }>`
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  border: 1px solid ${(props) => (props.active ? '#eab308' : '#e5e7eb')};
-  background-color: ${(props) => (props.active ? '#fef9c3' : 'transparent')};
-  color: ${(props) => (props.active ? '#eab308' : '#374151')};
-  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
-
-  &:hover {
-    background-color: ${(props) => (!props.disabled && !props.active ? '#f3f4f6' : 'transparent')};
-  }
-`;
-
-const CertificationField = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-
-  label {
-    font-size: 0.875rem;
-    font-weight: 500;
-  }
-
-  .inputs {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  input {
-    padding: 0.5rem;
-    border: 1px solid #d1d5db;
-    border-radius: 0.375rem;
-  }
-`;
-
 const Button = styled.button`
   padding: 0.5rem 1rem;
   background-color: #eab308;
@@ -157,21 +123,36 @@ const NavItem = styled.a<{ active?: boolean }>`
   }
 `;
 
-const MyProfile = () => {
+const MyProfile = ({ elderId }: { elderId: number }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [memberInfo, setMemberInfo] = useState({
-    name: '김재현',
-    phone: '01012345678',
-    gender: 'male',
-    address: '서울시 서초구 잠원동 롯데캐슬아파트 000동 0000호',
-    certifications: {
-      caregiving: { number: '1234567', year: '2025' },
-      social: { number: '12345', year: '1' },
-      nursing: { number: '1234567', year: '2025', cityCode: '' },
-      nursingHome: { number: '123456' },
-    },
-    preferences: { carePossible: false, sellPossible: false },
-  });
+  const { data: memberInfo, isError, error, isLoading } = useElder(elderId);
+  const updateElderMutation = useUpdateElder();
+  const deleteElderMutation = useDeleteElder();
+  
+  const [localMemberInfo, setLocalMemberInfo] = useState<any>({});
+
+  useEffect(() => {
+    if (memberInfo) {
+      setLocalMemberInfo(memberInfo);
+    }
+  }, [memberInfo]);
+
+  const handleSave = () => {
+    updateElderMutation.mutate({ elderId, data: localMemberInfo });
+    setIsEditing(false);
+  };
+
+  const handleDelete = () => {
+    deleteElderMutation.mutate(elderId);
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading member info: {error.message}</div>;
+  }
 
   return (
     <Container>
@@ -201,34 +182,30 @@ const MyProfile = () => {
         <MainContent>
           <GridWrapper>
             <Title>내 정보 관리</Title>
-            <Button onClick={() => setIsEditing(!isEditing)}>
+            <Button onClick={() => (isEditing ? handleSave() : setIsEditing(true))}>
               {isEditing ? '수정사항 저장' : '회원 정보 수정'}
+            </Button>
+            <Button onClick={handleDelete} style={{ backgroundColor: 'red', marginLeft: '1rem' }}>
+              회원 정보 삭제
             </Button>
 
             <FormWrapper>
               <Section>
                 <FormField>
                   <label>센터 이름</label>
-                  <input type="text" value={memberInfo.name} disabled={!isEditing} />
+                  <input type="text" value={localMemberInfo.name} onChange={(e) => setLocalMemberInfo({ ...localMemberInfo, name: e.target.value })} disabled={!isEditing} />
                 </FormField>
 
                 <FormField>
                   <label>연락처</label>
-                  <input type="text" value={memberInfo.phone} disabled={!isEditing} />
+                  <input type="text" value={localMemberInfo.phone} onChange={(e) => setLocalMemberInfo({ ...localMemberInfo, phone: e.target.value })} disabled={!isEditing} />
                 </FormField>
-
 
                 <FormField>
                   <label>주소</label>
                   <div>
-                    <input
-                      type="text"
-                      value={memberInfo.address}
-                      disabled={!isEditing}
-                    />
-                    {isEditing && (
-                      <AddressButton>주소찾기</AddressButton>
-                    )}
+                    <input type="text" value={localMemberInfo.address} onChange={(e) => setLocalMemberInfo({ ...localMemberInfo, address: e.target.value })} disabled={!isEditing} />
+                    {isEditing && <AddressButton>주소찾기</AddressButton>}
                   </div>
                 </FormField>
               </Section>
@@ -237,11 +214,8 @@ const MyProfile = () => {
                 <div>
                   <span className="text-sm">목욕차량 소유 여부</span>
                   <YellowToggleSwitch
-                    checked={memberInfo.preferences.carePossible}
-                    onCheckedChange={(checked) => setMemberInfo({
-                      ...memberInfo,
-                      preferences: { ...memberInfo.preferences, carePossible: checked }
-                    })}
+                    checked={localMemberInfo.preferences?.carePossible ?? false}
+                    onCheckedChange={(checked) => setLocalMemberInfo({ ...localMemberInfo, preferences: { ...localMemberInfo.preferences, carePossible: checked } })}
                     disabled={!isEditing}
                   />
                 </div>

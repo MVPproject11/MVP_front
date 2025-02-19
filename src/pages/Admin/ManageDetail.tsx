@@ -5,6 +5,11 @@ import ProfileComponent from "src/components/CaregiverMain/Matching/MatchingCard
 import { Home, Users, Settings } from 'lucide-react';
 import TagButton from 'src/components/Admin/TagButton';
 import {FormSection, Input, InputGroup} from 'src/components/Admin/FormSection';
+import { Caregiver } from 'src/types/caregiver';
+import { getCaregiver } from 'src/api/caregivers';
+import { useElders } from 'src/hook/useElder';  // useElders hook 추가
+import { useMatchings } from 'src/hook/useElder'; // 매칭에 대한 hook 추가
+import { useCaregiver } from 'src/hook/useCaregivers';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -201,35 +206,13 @@ interface MatchingCardProps {
     status: 'active' | 'inactive';
 }
 
-const dummyData: MatchingCardProps[] = [
-    { image: '/api/placeholder/200/200', name: '홍길동 어르신', status: 'active' },
-    { image: '/api/placeholder/200/200', name: '홍길동 어르신', status: 'active' },
-    { image: '/api/placeholder/200/200', name: '홍길동 어르신', status: 'active' },
-    { image: '/api/placeholder/200/200', name: '김영희 어르신', status: 'inactive' },
-    { image: '/api/placeholder/200/200', name: '김영희 어르신', status: 'inactive' },
-    { image: '/api/placeholder/200/200', name: '김영희 어르신', status: 'inactive' },
-  ];
-
 const ManageDetail = () => {
-  const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
+  const { data: eldersData, isLoading, isError, error } = useElders();
+  const { caregiver, loading, error: caregiverError } = useCaregiver();
     const handleClick = () => {
       navigate('/ManageDetail2');
     }
-
-  const [memberInfo, setMemberInfo] = useState({
-    name: '김재현',
-    phone: '01012345678',
-    gender: 'male',
-    address: '서울시 서초구 잠원동 롯데캐슬아파트 000동 0000호',
-    certifications: {
-      caregiving: { number: '1234567', year: '2025' },
-      social: { number: '12345', year: '1' },
-      nursing: { number: '1234567', year: '2025', cityCode: '' },
-      nursingHome: { number: '123456' },
-    },
-    preferences: { carePossible: false, sellPossible: false },
-  });
 
   return (
     <Container>
@@ -261,8 +244,8 @@ const ManageDetail = () => {
             <Title>매칭 관리</Title>
                 <FormSection title="사진" required>
                 <ImageContainer>
-                    {image ? (
-                        <ProfileImage src={image} alt="Profile" />
+                    {eldersData.image ? (
+                        <ProfileImage src={eldersData.image} alt="Profile" />
                     ) : (
                         <div>
                         <PlusIcon>+</PlusIcon>
@@ -278,16 +261,16 @@ const ManageDetail = () => {
               <Section>
                 <Title>요양보호사 매칭 추천 리스트</Title>
                 <Grid>
-                {dummyData.map((card, index) => (
-                    <button onClick={handleClick}>
-                        <ProfileComponent 
-                            key={index} 
-                            image={card.image} 
-                            name={card.name} 
-                            status={card.status}
-                        />
+                {caregiver ? caregiver.map((elder: Caregiver, index: number) => (
+                    <button key={index} onClick={handleClick}>
+                      <ProfileComponent
+                        image={caregiver.caregiverProfile || '/api/placeholder/200/200'}
+                        name={caregiver.name}
+                        initialStatus={selectedCaregiverId === caregiver.id ? 'active' : 'inactive'}
+                        onClick={() => handleClick(caregiver.id)}
+                      />
                     </button>
-                ))}
+                  )) : <div>매칭된 요양보호사가 없습니다.</div>}
                 </Grid>
               </Section>
             </FormWrapper>

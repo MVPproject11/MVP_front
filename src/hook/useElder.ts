@@ -23,7 +23,7 @@ export const useElder = (elderId: number) => {
 
 export const useUpdateElder = () => {
   return useMutation({
-    mutationFn: ({ elderId, data }: { elderId: number; data: any }) =>
+    mutationFn: ({ elderId, data }: { elderId: number; data: any}) =>
       updateElder(elderId, data),
   });
 };

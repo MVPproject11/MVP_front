@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 interface MatchingCardProps {
   image?: string;
   name: string;
-  status: 'active' | 'inactive';
+  initialStatus: 'active' | 'inactive';
+  onClick: () => void;
 }
 
 const Card = styled.div<{ status: 'active' | 'inactive' }>`
@@ -13,6 +14,8 @@ const Card = styled.div<{ status: 'active' | 'inactive' }>`
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border: ${(props) => (props.status === 'active' ? '2px solid #fbbf24' : '1px solid #e5e7eb')};
+  background-color: ${(props) => (props.status === 'active' ? '#fff7e6' : 'white')};
+  cursor: pointer;
 `;
 
 const ImageWrapper = styled.div`
@@ -79,9 +82,16 @@ const Icon = styled.svg`
   fill: currentColor;
 `;
 
-const MatchingCard: React.FC<MatchingCardProps> = ({ image, name, status }) => {
+const MatchingCard: React.FC<MatchingCardProps> = ({ image, name, initialStatus, onClick }) => {
+  const [status, setStatus] = useState<'active' | 'inactive'>(initialStatus);
+
+  const handleClick = () => {
+    setStatus((prevStatus) => (prevStatus === 'inactive' ? 'active' : 'inactive'));
+    onClick();
+  };
+
   return (
-    <Card status={status}>
+    <Card status={status} onClick={handleClick}>
       <ImageWrapper>
         {image ? (
           <Image src={image} alt={name} />
