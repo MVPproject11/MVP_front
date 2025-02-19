@@ -135,7 +135,7 @@ const CaregiversForElder = ({ elderId }: { elderId: number }) => {
   );
 };
 
-const MatchRequest = () => {
+const matchingManage = () => {
   const { data: elders, isLoading: eldersLoading, isError: eldersError, error: eldersErrorData } = useElders();
 
   if (eldersLoading) return <div>Loading...</div>;
@@ -159,8 +159,8 @@ const MatchRequest = () => {
             <NavItem href="/matchingManage" active>
               <Settings size={20} style={{ marginRight: '0.75rem' }} /> 매칭 관리
             </NavItem>
-            <NavItem href="/settings">
-              <Settings size={20} style={{ marginRight: '0.75rem' }} /> 내내 정보 관리
+            <NavItem href="/myprofile">
+              <Settings size={20} style={{ marginRight: '0.75rem' }} /> 내 정보 관리
             </NavItem>
           </Nav>
         </Sidebar>
@@ -181,4 +181,4 @@ const MatchRequest = () => {
   );
 };
 
-export default MatchRequest;
+export default matchingManage;

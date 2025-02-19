@@ -70,7 +70,11 @@ export default function LoginForm() {
       const { data } = response; // 응답 데이터에서 사용자 정보 추출
       login({ email: data.email, role: data.role }, "example_token"); // Zustand 상태 업데이트
       alert("로그인 성공!");
-      navigate("/BomListen");
+      if (data.role === "admin") {
+        navigate("/admin-dashboard");
+      } else {
+        navigate("/BomListen"); 
+      }
     } catch (error: any) {
       alert(error.message || "로그인에 실패했습니다.");
     }

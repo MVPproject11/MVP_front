@@ -171,10 +171,10 @@ const MatchRequest = () => {
             <NavItem href="/SeniorRegistration">
               <Home size={20} style={{ marginRight: '0.75rem' }} /> 어르신 정보 등록
             </NavItem>
-            <NavItem href="/matchingDetail">
+            <NavItem href="/matchingDetail" active>
               <Users size={20} style={{ marginRight: '0.75rem' }} /> 매칭 요청
             </NavItem>
-            <NavItem href="/matchingManage" active>
+            <NavItem href="/matchingManage">
               <Settings size={20} style={{ marginRight: '0.75rem' }} /> 매칭 관리
             </NavItem>
             <NavItem href="/settings">

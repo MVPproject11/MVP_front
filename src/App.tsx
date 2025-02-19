@@ -15,13 +15,14 @@ import ManageDetail from './pages/Admin/ManageDetail';
 import MyProfile from './pages/Admin/myProfileManagement';
 import MatchingDetailTwo from './pages/Admin/matchingDetail2';
 import BomListen from './pages/CaregiverMain/BomListen';
+import matchingManage from './pages/Admin/matchingManage';
 
 function App() {
   return (
     <div className="App">
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/lonin" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/find-id" element={<FindId />} /> 
         <Route path="/find-password" element={<FindPassword />} />
         <Route path="/work-settings" element={<WorkConditions/>}/>
@@ -35,6 +36,7 @@ function App() {
         <Route path="/manageDetail" element={<ManageDetail/>}/>
         <Route path="/myprofile" element={<MyProfile/>}/>
         <Route path="/matchingDetail2" element={<MatchingDetailTwo/>}/>
+        <Route path="/matchingManage" element={<matchingManage/>}/>
       </Routes>
     </div>
   );

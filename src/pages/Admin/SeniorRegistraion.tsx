@@ -119,17 +119,17 @@ const SeniorRegistration = () => {
         <Sidebar>
           <Nav>
             <NavItem href="/SeniorRegistration" active>
-              <Home size={20} style={{ marginRight: '0.75rem' }} /> 내 프로필
-            </NavItem>
-            <NavItem href="/work-settings">
-              <Users size={20} style={{ marginRight: '0.75rem' }} /> 근무 조건 설정
-            </NavItem>
-            <NavItem href="/matching">
-              <Settings size={20} style={{ marginRight: '0.75rem' }} /> 매칭 관리
-            </NavItem>
-            <NavItem href="/settings">
-              <Settings size={20} style={{ marginRight: '0.75rem' }} /> 회원 정보 관리
-            </NavItem>
+                          <Home size={20} style={{ marginRight: '0.75rem' }} /> 어르신 정보 등록
+                        </NavItem>
+                        <NavItem href="/matchrequest">
+                          <Users size={20} style={{ marginRight: '0.75rem' }} /> 매칭 요청
+                        </NavItem>
+                        <NavItem href="/matching" >
+                          <Settings size={20} style={{ marginRight: '0.75rem' }} /> 매칭 관리
+                        </NavItem>
+                        <NavItem href="/myprofile">
+                          <Settings size={20} style={{ marginRight: '0.75rem' }} /> 내 정보 관리
+                        </NavItem>
           </Nav>
         </Sidebar>
         <MainContent>

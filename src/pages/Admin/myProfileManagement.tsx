@@ -176,7 +176,7 @@ const MyProfile = () => {
             <NavItem href="/matching">
               <Settings size={20} style={{ marginRight: '0.75rem' }} /> 매칭 관리
             </NavItem>
-            <NavItem href="/settings" active>
+            <NavItem href="/myprofile" active>
               <Settings size={20} style={{ marginRight: '0.75rem' }} /> 회원 정보 관리
             </NavItem>
           </Nav>
