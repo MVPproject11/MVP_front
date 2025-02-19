@@ -1,0 +1,45 @@
+/* 전체 레이아웃 컨테이너 */
+.layout-container {
+    background: blue; /*나중에 지우기*/
+    display: flex;  
+    flex-direction: row;
+    width: 1920px; 
+    height: 1025px;
+    overflow: hidden;
+    position: relative
+  }
+  
+  /* 메인 사진 컨테이너 */
+  .main-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1377px; /* 고정 너비 */
+    height: 1080px; /* 고정 높이 */
+    background-image: url("../assets/image/main.png"); /* 메인 이미지 경로 */
+    background-size: cover; /* 비율 유지하며 채우기 */
+    background-position: center; /* 중앙 정렬 */
+    background-repeat: no-repeat; /* 반복 제거 */
+  }
+  
+  /* 콘텐츠 컨테이너 */
+  .contents-container {
+    position: relative; /* 내부 콘텐츠 배치를 위한 기준 */
+    margin-left: 1377px; /* 메인 사진 오른쪽에 배치 */
+    flex: 1; /* 남은 공간을 차지 */
+    height: 100%; /* 높이 100% */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* 상단 정렬 */
+    box-sizing: border-box;
+    background-color: #fff;
+  }
+  
+   /* 로고 스타일 */
+.logo {
+    position: absolute;
+    width: 163.55px; /* 로고 너비 */
+    height: auto; /* 비율 유지 */
+    bottom: 20px;
+  }
