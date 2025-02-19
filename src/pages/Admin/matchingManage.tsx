@@ -5,6 +5,7 @@ import { Home, Users, Settings } from 'lucide-react';
 import { useElders } from "src/hook/useElder";
 import { useCaregivers } from "src/hook/useCaregivers";
 import { Elder } from "src/types/elder";
+import CaregiversForElder from "./CaregiverForElder";
 import { Caregiver } from "src/types/caregiver";
 
 const Container = styled.div`
@@ -107,35 +108,7 @@ const ProfileWrapper = styled.div`
   }
 `;
 
-const CaregiversForElder = ({ elderId }: { elderId: number }) => {
-  const { data: caregivers, isLoading: caregiversLoading, isError: caregiversError, error: caregiversErrorData } = useCaregivers(elderId);
-  const [selectedCaregiverId, setSelectedCaregiverId] = useState<number | null>(null);
-
-  const handleClick = (caregiverId: number) => {
-    setSelectedCaregiverId(caregiverId);
-  };
-
-  if (caregiversLoading) return <div>Loading caregivers...</div>;
-  if (caregiversError) return <div>Error loading caregivers: {caregiversErrorData.message}</div>;
-
-  return (
-    <Grid>
-      {Array.isArray(caregivers) && caregivers.length > 0
-        ? caregivers.map((caregiver: Caregiver) => (
-            <MatchingCard
-              key={caregiver.id}
-              image={caregiver.caregiverProfile}
-              name={caregiver.name}
-              initialStatus={selectedCaregiverId === caregiver.id ? 'active' : 'inactive'}
-              onClick={() => handleClick(caregiver.id)}
-            />
-          ))
-        : null}
-    </Grid>
-  );
-};
-
-const matchingManage = () => {
+const MatchingManage = () => {
   const { data: elders, isLoading: eldersLoading, isError: eldersError, error: eldersErrorData } = useElders();
 
   if (eldersLoading) return <div>Loading...</div>;
@@ -181,4 +154,4 @@ const matchingManage = () => {
   );
 };
 
-export default matchingManage;
+export default MatchingManage;

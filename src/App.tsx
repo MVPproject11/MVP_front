@@ -15,7 +15,7 @@ import ManageDetail from './pages/Admin/ManageDetail';
 import MyProfile from './pages/Admin/myProfileManagement';
 import MatchingDetailTwo from './pages/Admin/matchingDetail2';
 import BomListen from './pages/CaregiverMain/BomListen';
-import matchingManage from './pages/Admin/matchingManage';
+import MatchingManage from './pages/Admin/matchingManage';
 
 function App() {
   return (
@@ -36,7 +36,7 @@ function App() {
         <Route path="/manageDetail" element={<ManageDetail/>}/>
         <Route path="/myprofile" element={<MyProfile/>}/>
         <Route path="/matchingDetail2" element={<MatchingDetailTwo/>}/>
-        <Route path="/matchingManage" element={<matchingManage/>}/>
+        <Route path="/matchingManage" element={<MatchingManage/>}/>
       </Routes>
     </div>
   );
