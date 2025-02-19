@@ -1,7 +1,7 @@
 import axios from "axios";
 import { SocialWorker } from "../types/socialworker";
 
-const API_URL = "/api/socialworkers";
+const API_URL = "http://localhost:8081/api/socialworkers";
 
 export const getSocialWorker = async () => {
   const response = await axios.get<{ code: number; message: string; data: SocialWorker }>(`${API_URL}/me`);
