@@ -1,8 +1,10 @@
-import React from "react";
-import ProfileComponent from "src/components/CaregiverMain/Matching/MatchingCard";
+import React, { useState } from "react";
+import ElderCard from "src/components/CaregiverMain/Matching/MatchingCard";  // 노인 카드 컴포넌트로 수정
 import styled from 'styled-components';
+import { useNavigate } from "react-router-dom";
 import { Home, Users, Settings } from 'lucide-react';
 import { useElders } from "../../hook/useElder";  // 어르신 목록 가져오는 훅
+import { useCaregivers } from "../../hook/useCaregivers";  // Caregiver 훅
 
 const Container = styled.div`
   min-height: 100vh;
@@ -84,7 +86,14 @@ const Grid = styled.div`
 `;
 
 const Matching = () => {
-  const { data: elders, isLoading, error } = useElders();
+  const navigate = useNavigate();
+  const { data: elders, isLoading, error } = useElders();  // 어르신 데이터 가져오기
+  const [selectedElderId, setSelectedElderId] = useState<number | null>(null);
+
+  const handleClick = (elderId: number) => {
+    setSelectedElderId(elderId);
+    navigate(`/ManageDetail/${elderId}`);  // 해당 어르신의 상세 페이지로 이동
+  };
 
   if (isLoading) return <p>로딩 중...</p>;
   if (error) return <p>데이터를 불러오는 중 오류 발생!</p>;
@@ -98,13 +107,13 @@ const Matching = () => {
       <ContentWrapper>
         <Sidebar>
           <Nav>
-            <NavItem href="#">
+            <NavItem href="#" active>
               <Home size={20} style={{ marginRight: '0.75rem' }} /> 내 프로필
             </NavItem>
             <NavItem href="/work-settings">
               <Users size={20} style={{ marginRight: '0.75rem' }} /> 근무 조건 설정
             </NavItem>
-            <NavItem href="/matching" active>
+            <NavItem href="/matching">
               <Settings size={20} style={{ marginRight: '0.75rem' }} /> 매칭 관리
             </NavItem>
             <NavItem href="/settings">
@@ -117,12 +126,12 @@ const Matching = () => {
             <Title>매칭 관리</Title>
             <Grid>
               {elders?.map((elder: any) => (
-                <ProfileComponent 
+                <ElderCard 
                   key={elder.id} 
-                  image={elder.elderPhoto || '/default-profile.png'} 
+                  image={elder.elderPhoto || '/default-profile.png'}  // 기본 이미지
                   name={elder.name} 
                   initialStatus={'inactive'}
-                  onClick={() => handleClick(elder.id)}
+                  onClick={() => handleClick(elder.id)}  // 클릭 시 상세 페이지로 이동
                 />
               ))}
             </Grid>
