@@ -26,7 +26,7 @@ function App() {
         <Route path="/work-settings" element={<WorkConditions/>}/>
         <Route path="/matching" element={<Matching/>}/>
         <Route path="/settings" element={<MemberInfoForm/>}/>
-        <Route path="/AddDetail" element={<AddDetail/>}/>
+        <Route path="/AddDetail/:elderId" element={<AddDetail />} />
         <Route path="/SeniorRegistration" element={<SeniorRegistration/>}/>
         <Route path="/MatchingDetail" element={<MatchingDetail/>}/>
         <Route path="/matchrequest" element={<MatchRequest/>}/>

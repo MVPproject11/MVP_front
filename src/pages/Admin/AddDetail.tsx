@@ -4,6 +4,7 @@ import { Home, Users, Settings } from 'lucide-react';
 import TagButton from 'src/components/Admin/TagButton';
 import {FormSection, Input, InputGroup} from 'src/components/Admin/FormSection';
 import { Elder } from 'src/types/elder';
+import { useLocation } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useElder } from 'src/hook/useElder';
 import { getElder, updateElder } from "../../api/elders";
@@ -158,7 +159,9 @@ const NavItem = styled.a<{ active?: boolean }>`
   }
 `;
 
-const AddDetail = ({ elderId }: { elderId: string }) => {
+const AddDetail = () => {
+    const location = useLocation();
+  const elderId = location.state?.elderId;
     const elderIdNumber = Number(elderId);
     const { data: elderData, isLoading, error } = useElder(elderIdNumber);
     const [name, setName] = useState<string>('');

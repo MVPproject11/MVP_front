@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import YellowToggleSwitch from '../../components/CaregiverMain/MemberInfo/Toggle';
 import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
 import { Home, Users, Settings } from 'lucide-react';
 import { useElder, useUpdateElder, useDeleteElder } from 'src/hook/useElder';
 
@@ -123,7 +124,9 @@ const NavItem = styled.a<{ active?: boolean }>`
   }
 `;
 
-const MyProfile = ({ elderId }: { elderId: number }) => {
+const MyProfile = () => {
+    const location = useLocation();
+  const elderId = location.state?.elderId;
   const [isEditing, setIsEditing] = useState(false);
   const { data: memberInfo, isError, error, isLoading } = useElder(elderId);
   const updateElderMutation = useUpdateElder();
