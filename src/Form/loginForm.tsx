@@ -3,6 +3,7 @@ import styled from "styled-components";
 import SocialLogin from "../components/socialLogin";
 import StyledLinkComponent from "../components/styledLinkComponent";
 import Button1 from "../components/button1";
+import { useNavigate } from "react-router-dom";
 import Button2 from "../components/button2";
 import { loginAPI } from "../api/loginAPI"; // fetch 함수
 import useAuthStore from "../store/authStore"; // Zustand 상태 관리
@@ -56,6 +57,7 @@ const Spacer = styled.div<{ height: number }>`
 `;
 
 export default function LoginForm() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState(""); // 이메일 상태
   const [password, setPassword] = useState(""); // 비밀번호 상태
   const { login, isLoggedIn, logout } = useAuthStore(); // Zustand 상태 관리
@@ -68,6 +70,7 @@ export default function LoginForm() {
       const { data } = response; // 응답 데이터에서 사용자 정보 추출
       login({ email: data.email, role: data.role }, "example_token"); // Zustand 상태 업데이트
       alert("로그인 성공!");
+      navigate("/BomListen");
     } catch (error: any) {
       alert(error.message || "로그인에 실패했습니다.");
     }
