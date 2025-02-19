@@ -186,7 +186,7 @@ const AddDetail = () => {
                 <Button>임시저장</Button>
                 <Button primary>저장</Button>
             </div>
-
+              {/*
                 <FormSection title="사진" required>
                     <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
                         {image ? (
@@ -199,7 +199,7 @@ const AddDetail = () => {
                         )}
                     </div>
                 </FormSection>
-
+*/}
             <FormWrapper>
               <Section>
                 <FormField>

@@ -259,6 +259,7 @@ const ManageDetail = () => {
         <MainContent>
           <GridWrapper>
             <Title>매칭 관리</Title>
+              {/*
                 <FormSection title="사진" required>
                 <ImageContainer>
                     {image ? (
@@ -271,7 +272,7 @@ const ManageDetail = () => {
                     )}
                 </ImageContainer>
                 </FormSection>
-
+*/}
             <FormWrapper>
               <Section>
               </Section>
