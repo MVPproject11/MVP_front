@@ -6,7 +6,7 @@ import {FormSection, Input, InputGroup} from 'src/components/Admin/FormSection';
 import { Elder } from 'src/types/elder';
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useElder } from 'src/hook/useElder';
-import { getElder, updateElder } from "../api/elderApi";
+import { getElder, updateElder } from "../../api/elders";
 import axios from "axios";
 
 const Container = styled.div`
@@ -217,7 +217,7 @@ const AddDetail = ({ elderId }: { elderId: string }) => {
         dailyLivingAssists,
         image
     };
-    await updateElder(UpdateData);
+    await updateElder( Number(elderId), UpdateData);
   }
 
   const handleTagClick = async (tag: string) => {
