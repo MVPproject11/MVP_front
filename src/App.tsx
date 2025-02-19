@@ -14,6 +14,7 @@ import MatchRequest from './pages/Admin/MatchRequest';
 import ManageDetail from './pages/Admin/ManageDetail';
 import MyProfile from './pages/Admin/myProfileManagement';
 import MatchingDetailTwo from './pages/Admin/matchingDetail2';
+import BomListen from './pages/CaregiverMain/BomListen';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/work-settings" element={<WorkConditions/>}/>
         <Route path="/matching" element={<Matching/>}/>
         <Route path="/settings" element={<MemberInfoForm/>}/>
+        <Route path="BomListen" element={<BomListen/>}/>
         <Route path="/AddDetail/:elderId" element={<AddDetail />} />
         <Route path="/SeniorRegistration" element={<SeniorRegistration/>}/>
         <Route path="/MatchingDetail" element={<MatchingDetail/>}/>
