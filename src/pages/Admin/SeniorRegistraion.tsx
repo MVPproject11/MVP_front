@@ -165,10 +165,11 @@ const ElderProfile = ({ elderId }: { elderId: number }) => {
   }
 
   return (
-    <ProfileComponent image={elderData.image} name={elderData.name} 
-        initialStatus={selectedCaregiverId === caregiver.id ? 'active' : 'inactive'}
-        onClick={() => handleClick(caregiver.id)}
-    />
+    <div>
+      <h4>{elderData.name}</h4>
+      <img src={elderData.image} alt={elderData.name} />
+      <p>Status: {elderData.status}</p>
+    </div>
   );
 };
 

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import MatchingCard from "src/components/CaregiverMain/Matching/MatchingCard";
 import styled from 'styled-components';
 import { Home, Users, Settings } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { useElders } from "src/hook/useElder";
 import { useCaregivers } from "src/hook/useCaregivers";
 import { Elder } from "src/types/elder";
@@ -69,13 +68,10 @@ const NavItem = styled.a<{ active?: boolean }>`
   border-radius: 0.5rem;
   text-decoration: none;
   transition: background-color 0.3s ease;
+
   &:hover {
     background-color: #f3f4f6;
   }
-`;
-
-const GridWrapper = styled.div`
-  padding: 1.5rem;
 `;
 
 const Grid = styled.div`
@@ -119,25 +115,22 @@ const CaregiversForElder = ({ elderId }: { elderId: number }) => {
     setSelectedCaregiverId(caregiverId);
   };
 
-  if (caregiversLoading) {
-    return <div>Loading caregivers...</div>;
-  }
-
-  if (caregiversError) {
-    return <div>Error loading caregivers: {caregiversErrorData.message}</div>;
-  }
+  if (caregiversLoading) return <div>Loading caregivers...</div>;
+  if (caregiversError) return <div>Error loading caregivers: {caregiversErrorData.message}</div>;
 
   return (
     <Grid>
-      {caregivers?.map((caregiver: Caregiver) => (
-        <MatchingCard
-          key={caregiver.id}
-          image={caregiver.caregiverProfile}
-          name={caregiver.name}
-          initialStatus={selectedCaregiverId === caregiver.id ? 'active' : 'inactive'}
-          onClick={() => handleClick(caregiver.id)}
-        />
-      ))}
+      {Array.isArray(caregivers) && caregivers.length > 0
+        ? caregivers.map((caregiver: Caregiver) => (
+            <MatchingCard
+              key={caregiver.id}
+              image={caregiver.caregiverProfile}
+              name={caregiver.name}
+              initialStatus={selectedCaregiverId === caregiver.id ? 'active' : 'inactive'}
+              onClick={() => handleClick(caregiver.id)}
+            />
+          ))
+        : null}
     </Grid>
   );
 };
@@ -145,13 +138,8 @@ const CaregiversForElder = ({ elderId }: { elderId: number }) => {
 const MatchRequest = () => {
   const { data: elders, isLoading: eldersLoading, isError: eldersError, error: eldersErrorData } = useElders();
 
-  if (eldersLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (eldersError) {
-    return <div>Error loading elders: {eldersErrorData.message}</div>;
-  }
+  if (eldersLoading) return <div>Loading...</div>;
+  if (eldersError) return <div>Error loading elders: {eldersErrorData.message}</div>;
 
   return (
     <Container>
@@ -177,18 +165,16 @@ const MatchRequest = () => {
           </Nav>
         </Sidebar>
         <MainContent>
-          <GridWrapper>
-            <Title>매칭 관리</Title>
-            {elders.map((elder: Elder) => (
-              <Section key={elder.id}>
-                <ProfileWrapper>
-                  <img src={elder.elderPhoto} alt={`${elder.name} 어르신`} />
-                  <h4>{elder.name} 어르신</h4>
-                </ProfileWrapper>
-                <CaregiversForElder elderId={elder.id} />
-              </Section>
-            ))}
-          </GridWrapper>
+          <Title>매칭 관리</Title>
+          {elders.map((elder: Elder) => (
+            <Section key={elder.id}>
+              <ProfileWrapper>
+                <img src={elder.elderPhoto} alt={`${elder.name} 어르신`} />
+                <h4>{elder.name} 어르신</h4>
+              </ProfileWrapper>
+              <CaregiversForElder elderId={elder.id} />
+            </Section>
+          ))}
         </MainContent>
       </ContentWrapper>
     </Container>

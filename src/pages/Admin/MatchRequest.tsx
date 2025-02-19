@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Home, Users, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useElders } from "src/hook/useElder";
+import { useCaregivers } from "src/hook/useCaregivers";
 import { Elder } from "src/types/elder";
 import { Caregiver } from "src/types/caregiver";
 
@@ -130,15 +131,19 @@ const CaregiversForElder = ({ elderId }: { elderId: number }) => {
 
   return (
     <Grid>
-      {caregivers.map((caregiver: Caregiver) => (
-        <MatchingCard
-          key={caregiver.id}
-          image={caregiver.caregiverProfile}
-          name={caregiver.name}
-          initialStatus={selectedCaregiverId === caregiver.id ? 'active' : 'inactive'}
-          onClick={() => handleClick(caregiver.id)}
-        />
-      ))}
+      {Array.isArray(caregivers) && caregivers.length > 0 ? (
+        caregivers.map((caregiver: Caregiver) => (
+          <MatchingCard
+            key={caregiver.id}
+            image={caregiver.caregiverProfile}
+            name={caregiver.name}
+            initialStatus={selectedCaregiverId === caregiver.id ? 'active' : 'inactive'}
+            onClick={() => handleClick(caregiver.id)}
+          />
+        ))
+      ) : (
+        <div>Caregivers not available.</div>
+      )}
     </Grid>
   );
 };
@@ -180,15 +185,19 @@ const MatchRequest = () => {
         <MainContent>
           <GridWrapper>
             <Title>매칭 관리</Title>
-            {elders.map((elder: Elder) => (
-              <Section key={elder.id}>
-                <ProfileWrapper>
-                  <img src={elder.elderPhoto} alt={`${elder.name} 어르신`} />
-                  <h4>{elder.name} 어르신</h4>
-                </ProfileWrapper>
-                <CaregiversForElder elderId={elder.id} />
-              </Section>
-            ))}
+            {Array.isArray(elders) && elders.length > 0 ? (
+              elders.map((elder: Elder) => (
+                <Section key={elder.id}>
+                  <ProfileWrapper>
+                    <img src={elder.elderPhoto} alt={`${elder.name} 어르신`} />
+                    <h4>{elder.name} 어르신</h4>
+                  </ProfileWrapper>
+                  <CaregiversForElder elderId={elder.id} />
+                </Section>
+              ))
+            ) : (
+              <div>No elders found.</div>
+            )}
           </GridWrapper>
         </MainContent>
       </ContentWrapper>
