@@ -5,6 +5,7 @@ import { X } from 'lucide-react';
 interface TimePickerModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSelect: (selectedTime: string) => void;
 }
 
 const Overlay = styled.div`
