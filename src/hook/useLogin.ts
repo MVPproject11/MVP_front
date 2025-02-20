@@ -7,7 +7,7 @@ import { jwtDecode } from 'jwt-decode';
 
 interface TokenPayload {
   email: string;
-  role: '요양보호사' | '사회복지사';  
+  role: 'socialworker' | 'caregiver';  
 }
 
 export const useLoginForm = () => {
@@ -40,7 +40,7 @@ export const useLoginForm = () => {
 
         alert("로그인 성공!");
         
-        if (decodedToken.role === '사회복지사') {
+        if (decodedToken.role === 'caregiver') {
           navigate("/BomListenTwo");
         } else {
           navigate("/BomListen");
