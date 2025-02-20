@@ -24,6 +24,7 @@ export const useLoginForm = () => {
       }
 
       const response = await loginAPI(email, password);
+      console.log('서버 응답:', response);
       
       if (response.token) {
 
