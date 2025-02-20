@@ -22,3 +22,10 @@ export const registerSocialWorker = async (socialWorker: Omit<SocialWorker, "id"
   const response = await axios.post(`${API_URL}/register`, socialWorker);
   return response.data;
 };
+export interface DashboardData {
+  todayUserCnt: number;
+  todayWithdrawCnt: number;
+  accumulateUserCnt: number;
+  accumulateWithdrawCnt: number;
+  todayNewUserCnt: number;
+}

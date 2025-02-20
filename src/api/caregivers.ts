@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Caregiver } from "../types/caregiver";
 
-const API_URL = "https://eleven.r-e.kr/api/caregiver";
+const API_URL = "https://eleven.r-e.kr/api/caregivers";
 
 export const getCaregiver = async (): Promise<Caregiver> => {
   const response = await axios.get(`${API_URL}/me`);
