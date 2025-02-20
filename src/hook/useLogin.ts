@@ -23,6 +23,9 @@ export const useLoginForm = () => {
         return;
       }
 
+      console.log('입력한 이메일:', email);  // 입력한 이메일 출력
+    console.log('입력한 비밀번호:', password);
+
       const response = await loginAPI(email, password);
       console.log('서버 응답:', response);
       

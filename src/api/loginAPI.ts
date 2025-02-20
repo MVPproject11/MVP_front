@@ -13,8 +13,10 @@ export async function loginAPI(email: string, password: string) {
       throw new Error("로그인에 실패했습니다.");
     }
 
-    // 성공 응답 데이터 반환
-    return response; // 전체 응답 반환
+    // JSON 형태로 응답 데이터 반환
+    const data = await response.json();  // 응답 본문을 JSON으로 변환
+
+    return data;  // JSON 데이터 반환
   } catch (error) {
     console.error("API 요청 오류:", error);
     throw error;
