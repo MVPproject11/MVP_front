@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8081/api/elders";
+const API_BASE_URL = "https://eleven.r-e.kr/api/elders";
 
 // 🔹 특정 어르신 정보 조회
 export const getElder = async (elderId: number) => {
