@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginAPI } from '../api/loginAPI';
 import useAuthStore from '../store/authStore';
-import jwtDecode from 'jwt-decode'; 
+import {jwtDecode} from 'jwt-decode'; 
 
 interface TokenPayload {
   email: string;
