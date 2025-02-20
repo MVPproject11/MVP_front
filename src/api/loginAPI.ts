@@ -18,7 +18,7 @@ export async function loginAPI(email: string, password: string) {
     const contentType = response.headers.get("Content-Type");
 
     if (contentType && contentType.includes("application/json")) {
-      data = await response.json();  // JSON 형태일 때만 파싱
+      data = await response.text();  // JSON 형태일 때만 파싱
     } else {
       throw new Error("응답이 JSON 형식이 아닙니다.");
     }
