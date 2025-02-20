@@ -13,13 +13,15 @@ export async function loginAPI(email: string, password: string) {
       throw new Error("로그인에 실패했습니다.");
     }
 
-    // 응답 본문이 JSON 형태일 경우에만 파싱
-    const contentType = response.headers.get("Content-Type");
-    if (contentType && contentType.includes("application/json")) {
-      return await response.json();
-    } else {
-      throw new Error("응답이 JSON 형식이 아닙니다.");
+    // Authorization 헤더에서 JWT 토큰 추출
+    const token = response.headers.get("Authorization");
+
+    if (!token) {
+      throw new Error("인증 토큰이 응답 헤더에 없습니다.");
     }
+
+    // JWT 토큰을 포함한 객체 반환
+    return { token };
   } catch (error) {
     console.error("API 요청 오류:", error);
     throw error;

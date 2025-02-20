@@ -6,7 +6,7 @@ import StyledLinkComponent from "../components/styledLinkComponent";
 import Button1 from "../components/button1";
 import Button2 from "../components/button2";
 import { FormGroup, Label, FormInput } from "../components/formComponent";
-import { useLoginForm } from '../hook/useLogin';
+import { useLogin } from '../hook/useLogin';
 
 const LoginFormContainer = styled.div`
   margin-top: 120px;
@@ -63,7 +63,7 @@ export default function LoginForm() {
     password,
     setPassword,
     handleLogin
-  } = useLoginForm();
+  } = useLogin();
 
   return (
     <div>
