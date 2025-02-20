@@ -16,12 +16,14 @@ import MyProfile from './pages/Admin/myProfileManagement';
 import MatchingDetailTwo from './pages/Admin/matchingDetail2';
 import BomListen from './pages/CaregiverMain/BomListen';
 import MatchingManage from './pages/Admin/matchingManage';
+import BomListenTwo from './pages/Admin/BomListenTwo';
 
 function App() {
   return (
     <div className="App">
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/BomListenTwo" element={<BomListenTwo/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="/find-id" element={<FindId />} /> 
         <Route path="/find-password" element={<FindPassword />} />

@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+// 로그인 처리 함수
+import React from "react";
 import styled from "styled-components";
 import SocialLogin from "../components/socialLogin";
 import StyledLinkComponent from "../components/styledLinkComponent";
 import Button1 from "../components/button1";
-import { useNavigate } from "react-router-dom";
 import Button2 from "../components/button2";
-import { loginAPI } from "../api/loginAPI"; // fetch 함수
-import useAuthStore from "../store/authStore"; // Zustand 상태 관리
 import { FormGroup, Label, FormInput } from "../components/formComponent";
+import { useLoginForm } from '../hook/useLogin';
 
 const LoginFormContainer = styled.div`
   margin-top: 120px;
@@ -56,35 +55,20 @@ const Spacer = styled.div<{ height: number }>`
   height: ${({ height }) => height}px;
 `;
 
-export default function LoginForm() {
-  const navigate = useNavigate();
-  const [email, setEmail] = useState(""); // 이메일 상태
-  const [password, setPassword] = useState(""); // 비밀번호 상태
-  const { login, isLoggedIn, logout } = useAuthStore(); // Zustand 상태 관리
-  console.log("LoginMain 컴포넌트 렌더링됨"); // 디버깅용
 
-  // 로그인 처리 함수
-  const handleLogin = async () => {
-    try {
-      const response = await loginAPI(email, password); // fetch로 API 요청
-      const { data } = response; // 응답 데이터에서 사용자 정보 추출
-      login({ email: data.email, role: data.role }, "example_token"); // Zustand 상태 업데이트
-      alert("로그인 성공!");
-      if (data.role === "admin") {
-        navigate("/admin-dashboard");
-      } else {
-        navigate("/BomListen"); 
-      }
-    } catch (error: any) {
-      alert(error.message || "로그인에 실패했습니다.");
-    }
-  };
+export default function LoginForm() {
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    handleLogin
+  } = useLoginForm();
 
   return (
     <div>
       <LoginFormContainer>
         <Title>새로운 가족, 새로운 행복</Title>
-        {/* 이메일 입력 */}
         <FormGroup>
           <Label htmlFor="email">이메일</Label>
           <FormInput
@@ -92,11 +76,10 @@ export default function LoginForm() {
             id="email"
             placeholder="이메일 입력"
             value={email}
-            onChange={(e) => setEmail(e.target.value)} // 상태 업데이트
+            onChange={(e) => setEmail(e.target.value)}
           />
         </FormGroup>
         <Spacer height={32} />
-        {/* 비밀번호 입력 */}
         <FormGroup>
           <Label htmlFor="password">비밀번호</Label>
           <FormInput
@@ -104,13 +87,12 @@ export default function LoginForm() {
             id="password"
             placeholder="비밀번호 입력"
             value={password}
-            onChange={(e) => setPassword(e.target.value)} // 상태 업데이트
+            onChange={(e) => setPassword(e.target.value)}
           />
         </FormGroup>
         <Spacer height={40} />
-        {/* 로그인 버튼 */}
         <ButtonContainer>
-          <Button1 onClick={handleLogin}>로그인</Button1> {/* 클릭 이벤트 추가 */}
+          <Button1 onClick={handleLogin}>로그인</Button1>
           <Button2>회원가입</Button2>
         </ButtonContainer>
         <Spacer height={8} />
