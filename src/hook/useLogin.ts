@@ -1,9 +1,8 @@
-// src/hooks/useLoginForm.ts
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginAPI } from '../api/loginAPI';
 import useAuthStore from '../store/authStore';
-import { jwtDecode } from 'jwt-decode'; 
+import jwtDecode from 'jwt-decode'; 
 
 interface TokenPayload {
   email: string;
@@ -24,13 +23,13 @@ export const useLoginForm = () => {
       }
 
       console.log('입력한 이메일:', email);  // 입력한 이메일 출력
-    console.log('입력한 비밀번호:', password);
+      console.log('입력한 비밀번호:', password);
 
       const response = await loginAPI(email, password);
       console.log('서버 응답:', response);
       
       if (response.token) {
-
+        // Use the correct import and method to decode the token
         const decodedToken = jwtDecode<TokenPayload>(response.token);
         
         login({
