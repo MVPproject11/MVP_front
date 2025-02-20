@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8081/api/matchings";
+const API_BASE_URL = "https://eleven.r-e.kr/api/matchings";
 
 // 🔹 요양보호사 매칭 목록 조회
 export const getMatchings = async () => {
