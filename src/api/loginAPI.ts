@@ -13,8 +13,15 @@ export async function loginAPI(email: string, password: string) {
       throw new Error("로그인에 실패했습니다.");
     }
 
-    // JSON 형태로 응답 데이터 반환
-    const data = await response.json();  // 응답 본문을 JSON으로 변환
+    // 응답 본문이 JSON 형태일 경우에만 파싱
+    let data = null;
+    const contentType = response.headers.get("Content-Type");
+
+    if (contentType && contentType.includes("application/json")) {
+      data = await response.json();  // JSON 형태일 때만 파싱
+    } else {
+      throw new Error("응답이 JSON 형식이 아닙니다.");
+    }
 
     return data;  // JSON 데이터 반환
   } catch (error) {
