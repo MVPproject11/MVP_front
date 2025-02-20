@@ -97,11 +97,9 @@ export default function LoginForm() {
         </ButtonContainer>
         <Spacer height={8} />
         <LinkContainer>
-          <StyledLinkComponent href="/find-id" text="아이디찾기" />
           <StyledLinkComponent href="/find-password" text="비밀번호찾기" />
         </LinkContainer>
         <Spacer height={40} />
-        <SocialLogin />
       </LoginFormContainer>
     </div>
   );
