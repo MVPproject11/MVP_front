@@ -127,7 +127,7 @@ const WorkConditions = () => {
                             ))}
                             <button onClick={() => setIsTimeSelectorOpen(true)}>+ 시간추가</button>
                             {isTimeSelectorOpen && (
-                                <TimePickerModal onClose={() => setIsTimeSelectorOpen(false)} onSelect={handleWorkTimeAdd} />
+                                <TimePickerModal isOpen={true} onClose={() => setIsTimeSelectorOpen(false)} onSelect={handleWorkTimeAdd} />
                             )}
                         </div>
                     </section>
